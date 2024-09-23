@@ -58,5 +58,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.6")
 
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
-    implementation("com.squareup.retrofit2:converter-gson")
+    implementation("com.squareup.retrofit2:converter-gson:2.1.0")
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
