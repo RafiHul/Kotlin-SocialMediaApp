@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface UserApi {
     @GET("socialmediaappapi.php")
-    suspend fun getUser(): Response<UserList>
+    suspend fun getUser(): Response<UserList>?
 }

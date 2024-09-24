@@ -11,5 +11,5 @@ class RetrofitInstance {
         return Retrofit.Builder().baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
+    } //ini coba jadiin companion entar
 }
