@@ -18,12 +18,16 @@ class UserViewModel: ViewModel() {
 
     fun setUser(){
         viewModelScope.launch(Dispatchers.IO) {
-            val us = repository.getUserApi()
-            if (us.isSuccessful && us.body() != null) {
-                Log.d("TAG", "Data: ${us.body()}")
-                _users.postValue(us.body())
-            } else {
-                Log.e("TAG", "Error: ${us.message()}")
+            try {
+                val us = repository.getUserApi()
+                if (us.isSuccessful && us.body() != null) {
+                    Log.d("TAG", "Data: ${us.body()}")
+                    _users.postValue(us.body())
+                } else {
+                    Log.e("TAG", "Error: ${us.message()}")
+                }
+            } catch (e: Exception) {
+                Log.e("TAG", "Exception: ${e.message}")
             }
         }
     }
