@@ -3,6 +3,7 @@ package com.rafih.socialmediaapp.repository
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.model.UserList
 import com.rafih.socialmediaapp.retrofit.RetrofitInstance
 import com.rafih.socialmediaapp.retrofit.UserApi
@@ -17,5 +18,10 @@ class UserRepository {
 
     suspend fun getUserApi(): Response<UserList> {
         return userServices.getUser()
+    }
+
+    suspend fun postUserApi(user: User): Response<User> {
+        return userServices.postUser(user.first_name, user.last_name, user.email)
+
     }
 }

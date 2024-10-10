@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.model.UserList
 import com.rafih.socialmediaapp.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,22 @@ class UserViewModel: ViewModel() {
                 }
             } catch (e: Exception) {
                 Log.e("TAG", "Exception: ${e.message}")
+            }
+        }
+    }
+
+    fun postUser(user: User){
+        viewModelScope.launch {
+            try {
+                val post = repository.postUserApi(user)
+                if (post.isSuccessful) {
+                    Log.d("Berhasil", "Data: ${post.body()}")
+                    _users.value?.add(post.body()!!)
+                } else {
+                    Log.e("Gagal", "Error: ${post.message()}")
+                }
+            } catch (e:Exception){
+                Log.d("Exeption", "Exception: ${e.message}")
             }
         }
     }

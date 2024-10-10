@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.rafih.socialmediaapp.databinding.ActivityMainBinding
+import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -31,6 +32,15 @@ class MainActivity : AppCompatActivity() {
         userViewModel.setUser()
         userViewModel.users.observe(this) {
             Log.d("TAG", it.toString())
+        }
+
+        binding.buttonPost.setOnClickListener {
+            val firstName = binding.editTextFirstName.text.toString()
+            val lastName = binding.editTextLastName.text.toString()
+
+            if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+                userViewModel.postUser(User("skibidi",firstName,0,lastName))
+            }
         }
     }
 }
