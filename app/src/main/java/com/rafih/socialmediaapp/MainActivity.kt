@@ -9,6 +9,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
+import com.rafih.socialmediaapp.adapter.FragmentPagerAdapter
 import com.rafih.socialmediaapp.databinding.ActivityMainBinding
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
@@ -27,20 +30,38 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbarMain)
 
+        setUpPager()
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         userViewModel.setUser()
         userViewModel.users.observe(this) {
             Log.d("TAG", it.toString())
         }
 
-        binding.buttonPost.setOnClickListener {
-            val firstName = binding.editTextFirstName.text.toString()
-            val lastName = binding.editTextLastName.text.toString()
+//        binding.buttonPost.setOnClickListener {
+//            val firstName = binding.editTextFirstName.text.toString()
+//            val lastName = binding.editTextLastName.text.toString()
+//
+//            if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
+//                userViewModel.postUser(User("skibidi",firstName,0,lastName))
+//            }
+//        }
+    }
 
-            if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-                userViewModel.postUser(User("skibidi",firstName,0,lastName))
+    private fun setUpPager() {
+        val myPager = binding.viewPagerMain
+        val myAdapter = FragmentPagerAdapter(supportFragmentManager,lifecycle)
+        val myTabLayout = binding.tabLayoutMain
+
+        myPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        myPager.adapter = myAdapter
+
+        TabLayoutMediator(myTabLayout,myPager){tab,position ->
+            when(position){
+                0 -> tab.text = "Beranda"
+                1 -> tab.text = "Profile"
             }
-        }
+        }.attach()
     }
 }
