@@ -12,11 +12,7 @@ import com.rafih.socialmediaapp.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserViewModel: ViewModel() {
-    private val repository = UserRepository()
-
-    private val _users = MutableLiveData<UserList>()
-    val users: LiveData<UserList> = _users
+class UserViewModel(val repository: UserRepository): ViewModel() {
 
     fun postRegisterUser(user: User){
         viewModelScope.launch {

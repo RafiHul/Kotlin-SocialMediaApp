@@ -14,7 +14,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.rafih.socialmediaapp.adapter.FragmentPagerAdapter
 import com.rafih.socialmediaapp.databinding.ActivityMainBinding
 import com.rafih.socialmediaapp.model.User
+import com.rafih.socialmediaapp.repository.UserRepository
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
+import com.rafih.socialmediaapp.viewmodel.UserViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -33,20 +35,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarMain)
 
         setUpPager()
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-        userViewModel.setUser()
-        userViewModel.users.observe(this) {
-            Log.d("TAG", it.toString())
-        }
-
-//        binding.buttonPost.setOnClickListener {
-//            val firstName = binding.editTextFirstName.text.toString()
-//            val lastName = binding.editTextLastName.text.toString()
-//
-//            if (firstName.isNotEmpty() && lastName.isNotEmpty()) {
-//                userViewModel.postUser(User("skibidi",firstName,0,lastName))
-//            }
-//        }
+        val userRepository = UserRepository()
+        userViewModel = ViewModelProvider(this,UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
     }
 
     private fun setUpPager() {
