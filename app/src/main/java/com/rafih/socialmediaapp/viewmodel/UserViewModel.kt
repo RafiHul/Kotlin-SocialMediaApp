@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rafih.socialmediaapp.model.Msg
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.model.UserList
 import com.rafih.socialmediaapp.repository.UserRepository
@@ -14,12 +15,12 @@ import kotlinx.coroutines.launch
 
 class UserViewModel(val repository: UserRepository): ViewModel() {
 
-    fun postRegisterUser(user: User){
+    fun postRegisterUser(user: User,action: (Msg) -> Unit){
         viewModelScope.launch {
             try {
                 val post = repository.postRegisterUser(user)
                 if (post.isSuccessful) {
-                    Log.d("Berhasil", "Success Membuat Akun")
+                    action(post.body()!!)
                 } else {
                     Log.e("Gagal", "Error: ${post.message()}")
                 }
