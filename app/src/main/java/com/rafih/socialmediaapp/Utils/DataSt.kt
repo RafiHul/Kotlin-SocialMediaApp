@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -12,18 +12,18 @@ import kotlinx.coroutines.flow.map
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name="user")
 
 object PreferencesKeys {
-    val ID = intPreferencesKey("id")
+    val JWT = stringPreferencesKey("jwt_token")
 }
 
-suspend fun saveLoginInfo(context: Context,id:Int){
+suspend fun saveLoginToken(context: Context,jwt_token:String){
     context.dataStore.edit { preferences ->
-        preferences[PreferencesKeys.ID] = id
+        preferences[PreferencesKeys.JWT] = jwt_token
     }
 }
 
-fun getLoginInfo(context: Context): Flow<Int> {
+fun getLoginToken(context: Context): Flow<String> {
     return context.dataStore.data.map { preferences ->
-        preferences[PreferencesKeys.ID] ?: -1
+        preferences[PreferencesKeys.JWT] ?: ""
     }
 }
 

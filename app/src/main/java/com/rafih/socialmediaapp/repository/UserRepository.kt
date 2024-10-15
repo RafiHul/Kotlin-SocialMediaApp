@@ -1,27 +1,31 @@
 package com.rafih.socialmediaapp.repository
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
+import com.rafih.socialmediaapp.Utils.getLoginToken
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.model.UserList
 import com.rafih.socialmediaapp.retrofit.RetrofitInstance
-import com.rafih.socialmediaapp.retrofit.UserApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import retrofit2.Call
+import kotlinx.coroutines.flow.Flow
+import com.rafih.socialmediaapp.Utils.saveLoginToken
+import com.rafih.socialmediaapp.model.Msg
+import com.rafih.socialmediaapp.model.MsgWithToken
 import retrofit2.Response
 
 class UserRepository {
     val userServices = RetrofitInstance.getUserService
 
-    suspend fun getUserApi(): Response<UserList> {
-        return userServices.getUser()
+
+    suspend fun setLoginData(context: Context, jwt_token: String){
+        saveLoginToken(context,jwt_token)
     }
 
-    suspend fun postUserApi(user: User): Response<User> {
-        return userServices.postUser(user.first_name, user.last_name, user.email)
-
+    suspend fun postRegisterUser(user: User): Response<Msg> {
+        return userServices.postRegisterUser(user.username,user.password)
     }
+
+    suspend fun postLoginUser(username:String,password:String): Response<MsgWithToken> {
+        return userServices.postLoginUser(username,password)
+    }
+
+    fun getLoginData(context: Context) = getLoginToken(context)
 }

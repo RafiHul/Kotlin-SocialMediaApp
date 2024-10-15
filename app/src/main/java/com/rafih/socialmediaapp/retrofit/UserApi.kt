@@ -1,5 +1,7 @@
 package com.rafih.socialmediaapp.retrofit
 
+import com.rafih.socialmediaapp.model.Msg
+import com.rafih.socialmediaapp.model.MsgWithToken
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.model.UserList
 import retrofit2.Response
@@ -13,10 +15,16 @@ interface UserApi {
     suspend fun getUser(): Response<UserList>
 
     @FormUrlEncoded
-    @POST("/userdata")
-    suspend fun postUser(
-        @Field("first_name") firstName: String,
-        @Field("last_name") lastName: String,
-        @Field("email") email: String
-    ): Response<User>
+    @POST("/register")
+    suspend fun postRegisterUser(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Response<Msg>
+
+    @FormUrlEncoded
+    @POST("/login")
+    suspend fun postLoginUser(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Response<MsgWithToken>
 }

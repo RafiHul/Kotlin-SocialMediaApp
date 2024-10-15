@@ -1,5 +1,6 @@
 package com.rafih.socialmediaapp.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,35 +18,32 @@ class UserViewModel: ViewModel() {
     private val _users = MutableLiveData<UserList>()
     val users: LiveData<UserList> = _users
 
-    fun setUser(){
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val us = repository.getUserApi()
-                if (us.isSuccessful && us.body() != null) {
-                    Log.d("TAG", "Data: ${us.body()}")
-                    _users.postValue(us.body())
-                } else {
-                    Log.e("TAG", "Error: ${us.message()}")
-                }
-            } catch (e: Exception) {
-                Log.e("TAG", "Exception: ${e.message}")
-            }
-        }
-    }
-
-    fun postUser(user: User){
+    fun postRegisterUser(user: User){
         viewModelScope.launch {
             try {
-                val post = repository.postUserApi(user)
+                val post = repository.postRegisterUser(user)
                 if (post.isSuccessful) {
-                    Log.d("Berhasil", "Data: ${post.body()}")
-                    _users.value?.add(post.body()!!)
+                    Log.d("Berhasil", "Success Membuat Akun")
                 } else {
                     Log.e("Gagal", "Error: ${post.message()}")
                 }
             } catch (e:Exception){
-                Log.d("Exeption", "Exception: ${e.message}")
+                Log.e("Exeption", "Exception: ${e.message}")
             }
         }
     }
+
+    fun postLoginUser(context: Context,username:String,password:String){
+        viewModelScope.launch {
+            val post = repository.postLoginUser(username,password)
+            if (post.isSuccessful && post.body() != null){
+                repository.setLoginData(context, post.body()!!.access_token)
+                Log.d("Berhasil", "Success Login")
+            } else {
+                Log.e("Gagal", "Error: ${post.message()}")
+            }
+        }
+    }
+
+    fun getUserLoginData(context: Context) = repository.getLoginData(context)
 }
