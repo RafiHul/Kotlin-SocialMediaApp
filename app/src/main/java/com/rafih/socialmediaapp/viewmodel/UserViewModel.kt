@@ -15,6 +15,9 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
     
     private val _loadingApi: MutableLiveData<Boolean> = MutableLiveData()
     val loadingApi = _loadingApi
+
+    private val _userJWToken: MutableLiveData<String> = MutableLiveData()
+    val userJWToken = _userJWToken
     
     fun postRegisterUser(user: User,action: (Msg) -> Unit){
         viewModelScope.launch {
@@ -27,7 +30,7 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
                     action(post.body()!!)
                 }
             } catch (e:Exception){
-                Log.e("Exeption", "Exception: ${e.message}")
+                action(Msg("Failed To Connect"))
             }
             _loadingApi.value = false
         }
@@ -48,14 +51,22 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
                 }
                 _loadingApi.value = false
             } catch (e: Exception) {
-                Log.e("Exeption", "Exception: ${e.message}")
+                action(MsgWithToken(null, "Failed To Connect"))
             }
         }
 
     }
 
-    fun seuLoadingApiTrue(){
+    fun setLoadingApiTrue(){
         _loadingApi.value = false
+    }
+
+    fun clearLoginJWT(context: Context){
+        viewModelScope.launch {
+            repository.clearLoginData(context)
+            _userJWToken.value = ""
+        }
+
     }
 
     fun getUserLoginData(context: Context) = repository.getLoginData(context)

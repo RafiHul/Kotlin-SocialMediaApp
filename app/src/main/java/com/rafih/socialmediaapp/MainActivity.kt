@@ -37,6 +37,12 @@ class MainActivity : AppCompatActivity() {
         setUpPager()
         val userRepository = UserRepository()
         userViewModel = ViewModelProvider(this,UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
+
+        lifecycleScope.launch {
+            userViewModel.getUserLoginData(application).collect{
+                userViewModel.userJWToken.value = it
+            }
+        }
     }
 
     private fun setUpPager() {

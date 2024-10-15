@@ -1,6 +1,7 @@
 package com.rafih.socialmediaapp.repository
 
 import android.content.Context
+import com.rafih.socialmediaapp.Utils.clearLoginInfo
 import com.rafih.socialmediaapp.Utils.getLoginToken
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.model.UserList
@@ -17,6 +18,10 @@ class UserRepository {
 
     suspend fun setLoginData(context: Context, jwt_token: String){
         saveLoginToken(context,jwt_token)
+    }
+
+    suspend fun clearLoginData(context: Context){
+        clearLoginInfo(context)
     }
 
     suspend fun postRegisterUser(user: User): Response<Msg> {

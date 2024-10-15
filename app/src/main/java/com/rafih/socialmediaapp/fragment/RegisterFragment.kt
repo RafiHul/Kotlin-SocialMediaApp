@@ -60,7 +60,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        userViewModel.seuLoadingApiTrue()
+        userViewModel.setLoadingApiTrue()
         _binding = null
     }
 }

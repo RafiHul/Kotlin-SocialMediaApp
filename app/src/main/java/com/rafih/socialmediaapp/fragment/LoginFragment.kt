@@ -59,7 +59,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        userViewModel.seuLoadingApiTrue()
+        userViewModel.setLoadingApiTrue()
         _binding = null
 
     }
