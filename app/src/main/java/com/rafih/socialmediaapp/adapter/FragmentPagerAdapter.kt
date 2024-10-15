@@ -14,8 +14,8 @@ class FragmentPagerAdapter(fm: FragmentManager, lc: Lifecycle): FragmentStateAda
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            1 -> FragmentOne()
-            else -> FragmentTwo()
+            1 -> FragmentTwo()
+            else -> FragmentOne()
         }
     }
 }

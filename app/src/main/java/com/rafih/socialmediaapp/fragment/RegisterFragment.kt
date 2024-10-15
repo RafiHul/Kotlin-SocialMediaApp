@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentRegisterBinding
 import com.rafih.socialmediaapp.model.User
@@ -18,6 +20,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
     private val binding get() = _binding!!
 
     private val userViewModel: UserViewModel by activityViewModels()
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +32,15 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
+
+        userViewModel.loadingApi.observe(viewLifecycleOwner){
+            if (it){
+                binding.progressBarRegister.visibility = View.VISIBLE
+            }else{
+                binding.progressBarRegister.visibility = View.GONE
+            }
+        }
 
         binding.buttonDaftar.setOnClickListener {
             val username = binding.editTextRegNama.text.toString()
@@ -40,10 +52,15 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 }
             }
         }
+
+        binding.buttonToLogin.setOnClickListener {
+            navController.navigate(R.id.action_registerFragment_to_loginFragment)
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        userViewModel.seuLoadingApiTrue()
         _binding = null
     }
 }
