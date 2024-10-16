@@ -24,11 +24,7 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
             _loadingApi.value = true
             try {
                 val post = repository.postRegisterUser(user)
-                if (post.isSuccessful) {
-                    action(post.body()!!)
-                } else {
-                    action(post.body()!!)
-                }
+                action(post.body()!!)
             } catch (e:Exception){
                 action(Msg("Failed To Connect"))
             }
@@ -45,10 +41,8 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
 
                 if (post.isSuccessful && postBody.access_token != null) {
                     repository.setLoginData(context, postBody.access_token)
-                    action(postBody)
-                } else {
-                    action(postBody)
                 }
+                action(postBody)
                 _loadingApi.value = false
             } catch (e: Exception) {
                 action(MsgWithToken(null, "Failed To Connect"))
@@ -59,6 +53,10 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
 
     fun setLoadingApiTrue(){
         _loadingApi.value = false
+    }
+
+    fun setJWToken(token: String){
+        _userJWToken.value = token
     }
 
     fun clearLoginJWT(context: Context){

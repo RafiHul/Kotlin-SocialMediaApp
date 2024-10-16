@@ -37,9 +37,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
-        userJWT = userViewModel.userJWToken.value.toString()
-        if (userJWT == "") {
-            navController.navigate(R.id.action_profileFragment_to_loginFragment)
+
+        userViewModel.userJWToken.observe(viewLifecycleOwner) {
+            if (it.isEmpty()) {
+                navController.navigate(R.id.action_profileFragment_to_loginFragment)
+            } else {
+                userJWT = it
+            }
+        }
+
+
+        binding.buttonLogout.setOnClickListener {
+            userViewModel.clearLoginJWT(requireContext())
         }
     }
 

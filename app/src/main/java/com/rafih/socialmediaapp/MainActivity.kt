@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             userViewModel.getUserLoginData(application).collect{
-                userViewModel.userJWToken.value = it
+                userViewModel.setJWToken(it)
             }
         }
     }
