@@ -38,20 +38,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
-        userViewModel.userJWToken.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) {
-                navController.navigate(R.id.action_profileFragment_to_loginFragment)
-            } else {
-                userJWT = it
-            }
+        userJWT = userViewModel.userJWToken.value.toString()
+
+        if (userJWT.isEmpty()) {
+            navController.navigate(R.id.action_profileFragment_to_loginFragment)
+        } else {
+            binding.textViewUsername.text = userViewModel.userData.value?.username
         }
+
 
         binding.buttonLogout.setOnClickListener {
             userViewModel.clearLoginJWT(requireContext())
             navController.navigate(R.id.action_profileFragment_to_loginFragment)
         }
-
-        Log.d("JWT", userJWT)
     }
 
     override fun onDestroyView() {

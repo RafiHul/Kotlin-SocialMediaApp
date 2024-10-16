@@ -3,6 +3,7 @@ package com.rafih.socialmediaapp
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -39,8 +40,13 @@ class MainActivity : AppCompatActivity() {
         userViewModel = ViewModelProvider(this,UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
 
         lifecycleScope.launch {
-            userViewModel.getUserLoginData(application).collect{
+            userViewModel.getUserLoginJWT(application).collect{
                 userViewModel.setJWToken(it)
+                if (it != "") {
+                    userViewModel.setUserData(it){
+                        Toast.makeText(application, "", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         }
     }

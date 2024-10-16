@@ -16,9 +16,21 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
     private val _loadingApi: MutableLiveData<Boolean> = MutableLiveData()
     val loadingApi = _loadingApi
 
+    private val _userData: MutableLiveData<User> = MutableLiveData()
+    val userData = _userData
+
     private val _userJWToken: MutableLiveData<String> = MutableLiveData()
     val userJWToken = _userJWToken
-    
+
+    suspend fun setUserData(jwt: String, action: (User) -> Unit){
+        val get = repository.getUserData("Bearer $jwt")
+        if (get.isSuccessful){
+            _userData.value = get.body()
+        } else {
+            action(get.body()!!)
+        }
+    }
+
     fun postRegisterUser(user: User,action: (Msg) -> Unit){
         viewModelScope.launch {
             _loadingApi.value = true
@@ -62,10 +74,10 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
     fun clearLoginJWT(context: Context){
         viewModelScope.launch {
             repository.clearLoginData(context)
-            _userJWToken.value = ""
+            setJWToken("")
         }
 
     }
 
-    fun getUserLoginData(context: Context) = repository.getLoginData(context)
+    fun getUserLoginJWT(context: Context) = repository.getLoginData(context)
 }
