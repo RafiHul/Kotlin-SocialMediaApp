@@ -46,10 +46,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-
         binding.buttonLogout.setOnClickListener {
             userViewModel.clearLoginJWT(requireContext())
+            navController.navigate(R.id.action_profileFragment_to_loginFragment)
         }
+
+        Log.d("JWT", userJWT)
     }
 
     override fun onDestroyView() {

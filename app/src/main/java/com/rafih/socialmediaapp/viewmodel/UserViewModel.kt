@@ -37,7 +37,7 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
             try {
                 _loadingApi.value = true
                 val post = repository.postLoginUser(username, password)
-                val postBody = post.body() ?: MsgWithToken(null, "")
+                val postBody = post.body() ?: MsgWithToken(null, "Terjadi Kesalahan")
 
                 if (post.isSuccessful && postBody.access_token != null) {
                     repository.setLoginData(context, postBody.access_token)
