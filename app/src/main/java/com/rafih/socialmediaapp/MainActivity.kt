@@ -39,12 +39,15 @@ class MainActivity : AppCompatActivity() {
         val userRepository = UserRepository()
         userViewModel = ViewModelProvider(this,UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
 
+
+        // mengecek token jwt
         lifecycleScope.launch {
             userViewModel.getUserLoginJWT(application).collect{
                 userViewModel.setJWToken(it)
+                // jika ada akan disimpan ke data user
                 if (it != "") {
                     userViewModel.setUserData(it){
-                        Toast.makeText(application, "", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(application, "Gagal memuat akun, harap login ulang", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
