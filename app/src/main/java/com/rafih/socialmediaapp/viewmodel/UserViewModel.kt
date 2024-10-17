@@ -1,7 +1,9 @@
 package com.rafih.socialmediaapp.viewmodel
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +13,7 @@ import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.repository.UserRepository
 import kotlinx.coroutines.launch
 
-class UserViewModel(val repository: UserRepository): ViewModel() {
+class UserViewModel(app:Application,val repository: UserRepository): AndroidViewModel(app) {
     
     private val _loadingApi: MutableLiveData<Boolean> = MutableLiveData()
     val loadingApi = _loadingApi
@@ -22,12 +24,13 @@ class UserViewModel(val repository: UserRepository): ViewModel() {
     private val _userJWToken: MutableLiveData<String> = MutableLiveData()
     val userJWToken = _userJWToken
 
-    suspend fun setUserData(jwt: String, action: (User) -> Unit){
+    suspend fun setUserData(jwt: String,action: () -> Unit){
         val get = repository.getUserData("Bearer $jwt")
         if (get.isSuccessful){
             _userData.value = get.body()
         } else {
-            action(get.body()!!)
+            action()
+            setJWToken("")
         }
     }
 

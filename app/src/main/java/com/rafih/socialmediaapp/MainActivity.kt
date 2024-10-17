@@ -18,14 +18,20 @@ import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.repository.UserRepository
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import com.rafih.socialmediaapp.viewmodel.UserViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var userViewModel: UserViewModel
+
+    @Inject
+    lateinit var userRepository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +42,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarMain)
 
         setUpPager()
-        val userRepository = UserRepository()
-        userViewModel = ViewModelProvider(this,UserViewModelFactory(userRepository)).get(UserViewModel::class.java)
-
+        userViewModel = ViewModelProvider(this,UserViewModelFactory(application,userRepository)).get(UserViewModel::class.java)
+        Log.d("wdadasdwa",userViewModel.userJWToken.value.toString())
 
         // mengecek token jwt
         lifecycleScope.launch {
