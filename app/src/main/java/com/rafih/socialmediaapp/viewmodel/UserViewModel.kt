@@ -27,20 +27,30 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
     private val _userJWToken: MutableLiveData<String> = MutableLiveData()
     val userJWToken = _userJWToken
 
-    suspend fun setUserData(jwt: String,action: () -> Unit){
+    suspend fun <T> withLoading(block: suspend () -> T):T{
         _loadingApi.value = true
-        val get = repository.getUserData("Bearer $jwt")
-        if (get.isSuccessful){
-            _userData.value = get.body()
-        } else {
-            action()
-            setJWToken("")
+        return try {
+            block()
+        } finally {
+            _loadingApi.value = false
         }
-        _loadingApi.value = false
     }
 
-    fun postRegisterUser(user: User,action: (Msg) -> Unit){
-        viewModelScope.launch {
+    suspend fun setUserData(jwt: String,action: () -> Unit){
+        withLoading {
+            val get = repository.getUserData("Bearer $jwt")
+            if (get.isSuccessful){
+                _userData.value = get.body()
+            } else {
+                action()
+                setJWToken("")
+            }
+            _loadingApi.value = false
+        }
+    }
+
+    suspend fun postRegisterUser(user: User,action: (Msg) -> Unit){
+        withLoading {
             _loadingApi.value = true
             try {
                 val post = repository.postRegisterUser(user)
@@ -52,8 +62,8 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         }
     }
 
-    fun postLoginUser(context: Context,username:String,password:String,action: (MsgWithToken) -> Unit){
-        viewModelScope.launch {
+    suspend fun postLoginUser(context: Context,username:String,password:String,action: (MsgWithToken) -> Unit){
+        withLoading {
             try {
                 _loadingApi.value = true
                 val post = repository.postLoginUser(username, password)

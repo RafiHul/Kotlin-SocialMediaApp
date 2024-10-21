@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentRegisterBinding
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
+import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -47,8 +49,10 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             val password = binding.editTextRegPassword.text.toString()
 
             if (username.isNotEmpty() && password.isNotEmpty()){
-                userViewModel.postRegisterUser(User("s","p",0,"as",username,password)){
-                    Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    userViewModel.postRegisterUser(User("s","p",0,"as",username,password)){
+                        Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }

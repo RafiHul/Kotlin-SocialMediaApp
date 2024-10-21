@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentLoginBinding
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
+import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
@@ -36,7 +38,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         userViewModel.loadingApi.observe(viewLifecycleOwner){
             if (it){
                 binding.progressBarLogin.visibility = View.VISIBLE
-            }else{
+            } else {
                 binding.progressBarLogin.visibility = View.GONE
             }
         }
@@ -46,10 +48,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             val password = binding.editTextLogPassword.text.toString()
 
             if (username.isNotEmpty() && password.isNotEmpty()){
-                userViewModel.postLoginUser(requireContext(),username,password){
-                    Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
-                    if (it.access_token != null || it.msg != "Terjadi Kesalahan"){
-                        navController.navigate(R.id.action_loginFragment_to_profileFragment)
+                lifecycleScope.launch {
+                    userViewModel.postLoginUser(requireContext(), username, password) {
+                        Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                        if (it.access_token != null || it.msg != "Terjadi Kesalahan") {
+                            navController.navigate(R.id.action_loginFragment_to_profileFragment)
+                        }
                     }
                 }
             }
