@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -28,10 +29,8 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    lateinit var userViewModel: UserViewModel
 
-    @Inject
-    lateinit var userRepository: UserRepository
+    val userViewModel: UserViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,19 +41,10 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarMain)
 
         setUpPager()
-        userViewModel = ViewModelProvider(this,UserViewModelFactory(application,userRepository)).get(UserViewModel::class.java)
-        Log.d("wdadasdwa",userViewModel.userJWToken.value.toString())
 
-        // mengecek token jwt
         lifecycleScope.launch {
-            userViewModel.getUserLoginJWT(application).collect{
+            userViewModel.getUserLoginJWT(this@MainActivity).collect{
                 userViewModel.setJWToken(it)
-                // jika ada akan disimpan ke data user
-                if (it != "") {
-                    userViewModel.setUserData(it){
-                        Toast.makeText(application, "Gagal memuat akun, harap login ulang", Toast.LENGTH_SHORT).show()
-                    }
-                }
             }
         }
     }

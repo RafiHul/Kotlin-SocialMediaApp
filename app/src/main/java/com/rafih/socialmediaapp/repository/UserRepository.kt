@@ -4,9 +4,7 @@ import android.content.Context
 import com.rafih.socialmediaapp.Utils.clearLoginInfo
 import com.rafih.socialmediaapp.Utils.getLoginToken
 import com.rafih.socialmediaapp.model.User
-import com.rafih.socialmediaapp.model.UserList
 import com.rafih.socialmediaapp.retrofit.RetrofitInstance
-import kotlinx.coroutines.flow.Flow
 import com.rafih.socialmediaapp.Utils.saveLoginToken
 import com.rafih.socialmediaapp.model.Msg
 import com.rafih.socialmediaapp.model.MsgWithToken

@@ -11,9 +11,12 @@ import com.rafih.socialmediaapp.model.Msg
 import com.rafih.socialmediaapp.model.MsgWithToken
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UserViewModel(app:Application,val repository: UserRepository): AndroidViewModel(app) {
+@HiltViewModel
+class UserViewModel @Inject constructor(val app:Application,val repository: UserRepository): AndroidViewModel(app) {
     
     private val _loadingApi: MutableLiveData<Boolean> = MutableLiveData()
     val loadingApi = _loadingApi
@@ -25,6 +28,7 @@ class UserViewModel(app:Application,val repository: UserRepository): AndroidView
     val userJWToken = _userJWToken
 
     suspend fun setUserData(jwt: String,action: () -> Unit){
+        _loadingApi.value = true
         val get = repository.getUserData("Bearer $jwt")
         if (get.isSuccessful){
             _userData.value = get.body()
@@ -32,6 +36,7 @@ class UserViewModel(app:Application,val repository: UserRepository): AndroidView
             action()
             setJWToken("")
         }
+        _loadingApi.value = false
     }
 
     fun postRegisterUser(user: User,action: (Msg) -> Unit){
@@ -79,7 +84,6 @@ class UserViewModel(app:Application,val repository: UserRepository): AndroidView
             repository.clearLoginData(context)
             setJWToken("")
         }
-
     }
 
     fun getUserLoginJWT(context: Context) = repository.getLoginData(context)
