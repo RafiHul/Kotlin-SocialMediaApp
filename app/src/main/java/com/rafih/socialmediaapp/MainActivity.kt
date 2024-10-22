@@ -42,11 +42,8 @@ class MainActivity : AppCompatActivity() {
 
         setUpPager()
 
-        lifecycleScope.launch {
-            userViewModel.getUserLoginJWT(this@MainActivity).collect{
-                userViewModel.setJWToken(it)
-            }
-        }
+        val jwttoken = intent.getStringExtra("jwttoken").toString()
+        userViewModel.setJWToken(jwttoken)
     }
 
     private fun setUpPager() {
