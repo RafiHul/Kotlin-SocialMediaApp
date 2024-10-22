@@ -44,7 +44,6 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
                 _userData.value = get.body()
             } else {
                 action()
-                setJWToken("")
             }
             _loadingApi.value = false
         }

@@ -71,6 +71,10 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
+        binding.buttonSettingsProfile.setOnClickListener {
+            navController.navigate(R.id.action_profileFragment_to_settingsProfileFragment)
+        }
+
         binding.buttonLogout.setOnClickListener {
             userViewModel.clearLoginJWT(requireContext())
             navController.navigate(R.id.action_profileFragment_to_loginFragment)
