@@ -12,6 +12,7 @@ import com.rafih.socialmediaapp.model.MsgWithToken
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -67,9 +68,10 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
             try {
                 _loadingApi.value = true
                 val post = repository.postLoginUser(username, password)
-                val postBody = post.body() ?: MsgWithToken(null, "Terjadi Kesalahan")
+                val postBody = post.body()!!
 
                 if (post.isSuccessful && postBody.access_token != null) {
+                    setJWToken(postBody.access_token)
                     repository.setLoginData(context, postBody.access_token)
                 }
                 action(postBody)
