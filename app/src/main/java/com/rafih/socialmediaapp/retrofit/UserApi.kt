@@ -31,4 +31,10 @@ interface UserApi {
     suspend fun getUserData(
         @Header("Authorization") jwt: String
     ): Response<User>
+
+    @FormUrlEncoded
+    @POST("/changeprofileemail")
+    suspend fun changeProfileEmail(
+        @Field("email") email: String
+    ): Response<User>
 }
