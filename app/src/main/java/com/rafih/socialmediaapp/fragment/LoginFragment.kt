@@ -51,7 +51,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 lifecycleScope.launch {
                     userViewModel.postLoginUser(requireContext(), username, password) {
                         Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
-                        if (it.access_token != null) {
+                        if (it.access_token.isNotEmpty()) {
                             navController.navigate(R.id.action_loginFragment_to_profileFragment)
                         }
                     }

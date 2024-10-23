@@ -45,41 +45,47 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
             } else {
                 action()
             }
-            _loadingApi.value = false
         }
     }
 
     suspend fun postRegisterUser(user: User,action: (Msg) -> Unit){
         withLoading {
-            _loadingApi.value = true
             try {
                 val post = repository.postRegisterUser(user)
                 action(post.body()!!)
             } catch (e:Exception){
-                action(Msg("Failed To Connect"))
+                action(Msg("failed","Failed To Connect"))
             }
-            _loadingApi.value = false
         }
     }
 
     suspend fun postLoginUser(context: Context,username:String,password:String,action: (MsgWithToken) -> Unit){
         withLoading {
             try {
-                _loadingApi.value = true
                 val post = repository.postLoginUser(username, password)
                 val postBody = post.body()!!
 
-                if (post.isSuccessful && postBody.access_token != null) {
+                if (post.isSuccessful && postBody.access_token.isNotEmpty()) {
                     setJWToken(postBody.access_token)
                     repository.setLoginData(context, postBody.access_token)
                 }
                 action(postBody)
-                _loadingApi.value = false
             } catch (e: Exception) {
-                action(MsgWithToken(null, "Failed To Connect"))
+                action(MsgWithToken("failed", "","Failed To Connect"))
             }
         }
+    }
 
+    suspend fun changeProfileEmail(email:String,action: (Msg) -> Unit){
+        try {
+            val post = repository.changeProfileEmail(email)
+            val postBody = post.body()
+            if (post.isSuccessful){
+                _userData.value = postBody
+            }
+        } catch (e:Exception){
+            action(Msg("failed","Failed To Connect"))
+        }
     }
 
     fun setLoadingApiTrue(){

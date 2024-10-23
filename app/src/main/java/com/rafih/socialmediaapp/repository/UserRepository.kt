@@ -34,5 +34,9 @@ class UserRepository {
         return userServices.postLoginUser(username,password)
     }
 
+    suspend fun changeProfileEmail(email:String): Response<User> {
+        return userServices.changeProfileEmail(email)
+    }
+
     fun getLoginData(context: Context) = getLoginToken(context)
 }
