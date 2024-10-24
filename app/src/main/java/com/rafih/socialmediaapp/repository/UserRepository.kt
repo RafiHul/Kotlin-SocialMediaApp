@@ -34,8 +34,8 @@ class UserRepository {
         return userServices.postLoginUser(username,password)
     }
 
-    suspend fun changeProfileEmail(jwt_token: String,email:String): Response<User> {
-        return userServices.changeProfileEmail(jwt_token,email)
+    suspend fun changeProfileEmail(jwtToken: String,email:String): Response<User> {
+        return userServices.changeProfileEmail(jwtToken,email)
     }
 
     fun getLoginData(context: Context) = getLoginToken(context)

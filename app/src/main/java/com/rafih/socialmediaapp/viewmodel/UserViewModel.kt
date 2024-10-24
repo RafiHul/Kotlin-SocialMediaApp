@@ -78,8 +78,8 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
 
     suspend fun changeProfileEmail(email:String,action: (Msg) -> Unit){
         try {
-            val jwt_bearer = "Bearer ${userJWToken.value.toString()}"
-            val post = repository.changeProfileEmail(jwt_bearer,email)
+            val jwtBearer = "Bearer ${userJWToken.value.toString()}"
+            val post = repository.changeProfileEmail(jwtBearer,email)
             val postBody = post.body()!!
             if (post.isSuccessful){
                 _userData.value = postBody

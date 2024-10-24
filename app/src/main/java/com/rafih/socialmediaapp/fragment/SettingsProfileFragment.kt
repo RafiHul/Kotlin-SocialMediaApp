@@ -53,22 +53,16 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
             navController.navigate(R.id.action_settingsProfileFragment_to_loginFragment)
         }
 
-        fun changeProfileDialog(fillDialogInput:String, action: () -> Unit) = View.OnClickListener {
-            MaterialDialog(requireContext()).show {
-                input(prefill = fillDialogInput){ materialDialog,Text ->
-                    //insert Api
-                    action()
-                }
-                positiveButton(R.string.simpan)
-                negativeButton(R.string.batal)
-            }
+
+        userViewModel.userData.observe(viewLifecycleOwner){
+            binding.textViewEmail.text = it.email
         }
 
         binding.textViewEmail.apply {
             text = userData.email
             setOnClickListener(changeProfileDialog(userData.email){
                 lifecycleScope.launch {
-                    userViewModel.changeProfileEmail(userData.email){
+                    userViewModel.changeProfileEmail(it.toString()){
                         Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -86,6 +80,17 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
 //
 //            }
 //        }
+    }
+
+    fun changeProfileDialog(fillDialogInput:String, action: (CharSequence) -> Unit) = View.OnClickListener {
+        MaterialDialog(requireContext()).show {
+            input(prefill = fillDialogInput){ materialDialog,Text ->
+                //insert Api
+                action(Text)
+            }
+            positiveButton(R.string.simpan)
+            negativeButton(R.string.batal)
+        }
     }
 
     override fun onAttach(context: Context) {
