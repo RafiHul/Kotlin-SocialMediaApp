@@ -55,5 +55,17 @@
         <action
             android:id="@+id/action_settingsProfileFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_settingsProfileFragment_to_editSettingsProfileFragment"
+            app:destination="@id/editSettingsProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editSettingsProfileFragment"
+        android:name="com.rafih.socialmediaapp.fragment.EditSettingsProfileFragment"
+        android:label="fragment_edit_settings_profile"
+        tools:layout="@layout/fragment_edit_settings_profile" >
+        <action
+            android:id="@+id/action_editSettingsProfileFragment_to_settingsProfileFragment"
+            app:destination="@id/settingsProfileFragment" />
     </fragment>
 </navigation>
