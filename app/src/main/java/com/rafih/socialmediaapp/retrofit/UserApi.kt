@@ -35,6 +35,7 @@ interface UserApi {
     @FormUrlEncoded
     @POST("/changeprofileemail")
     suspend fun changeProfileEmail(
+        @Header("Authorization") jwt_token: String,
         @Field("email") email: String
     ): Response<User>
 }

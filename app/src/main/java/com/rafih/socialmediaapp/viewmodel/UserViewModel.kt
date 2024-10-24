@@ -37,13 +37,13 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         }
     }
 
-    suspend fun setUserData(jwt: String,action: () -> Unit){
+    suspend fun setUserData(jwt: String,action: (String) -> Unit){
         withLoading {
             val get = repository.getUserData("Bearer $jwt")
             if (get.isSuccessful){
                 _userData.value = get.body()
             } else {
-                action()
+                action(get.message())
             }
         }
     }
@@ -78,13 +78,18 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
 
     suspend fun changeProfileEmail(email:String,action: (Msg) -> Unit){
         try {
-            val post = repository.changeProfileEmail(email)
-            val postBody = post.body()
+            val jwt_bearer = "Bearer ${userJWToken.value.toString()}"
+            val post = repository.changeProfileEmail(jwt_bearer,email)
+            val postBody = post.body()!!
             if (post.isSuccessful){
                 _userData.value = postBody
+                action(Msg("success","berhasil mengganti email"))
+            } else {
+                Log.d("suk","gk sukses")
             }
         } catch (e:Exception){
             action(Msg("failed","Failed To Connect"))
+            Log.d("change email eror",e.message.toString())
         }
     }
 

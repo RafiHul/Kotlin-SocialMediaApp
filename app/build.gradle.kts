@@ -72,4 +72,6 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.52")
     ksp("com.google.dagger:hilt-android-compiler:2.52")
+
+    implementation("com.afollestad.material-dialogs:input:3.3.0")
 }

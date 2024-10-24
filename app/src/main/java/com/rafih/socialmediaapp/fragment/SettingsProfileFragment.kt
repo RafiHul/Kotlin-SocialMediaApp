@@ -1,19 +1,28 @@
 package com.rafih.socialmediaapp.fragment
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentSettingsProfileBinding
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
+import kotlinx.coroutines.launch
 
+@SuppressLint("CheckResult")
 class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
 
     private var _binding: FragmentSettingsProfileBinding? = null
@@ -44,10 +53,50 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
             navController.navigate(R.id.action_settingsProfileFragment_to_loginFragment)
         }
 
-        binding.apply {
-            textViewEmail.text = userData.email
-            textViewFirstName.text = userData.first_name
-            textViewLastName.text = userData.last_name
+        fun changeProfileDialog(fillDialogInput:String, action: () -> Unit) = View.OnClickListener {
+            MaterialDialog(requireContext()).show {
+                input(prefill = fillDialogInput){ materialDialog,Text ->
+                    //insert Api
+                    action()
+                }
+                positiveButton(R.string.simpan)
+                negativeButton(R.string.batal)
+            }
         }
+
+        binding.textViewEmail.apply {
+            text = userData.email
+            setOnClickListener(changeProfileDialog(userData.email){
+                lifecycleScope.launch {
+                    userViewModel.changeProfileEmail(userData.email){
+                        Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            })
+        }
+//        binding.textViewFirstName.apply {
+//            text = userData.first_name
+//            setOnClickListener(text){
+//
+//            }
+//        }
+//        binding.textViewLastName.apply {
+//            text = userData.last_name
+//            setOnClickListener(text){
+//
+//            }
+//        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this){
+            navController.navigate(R.id.action_settingsProfileFragment_to_profileFragment)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
