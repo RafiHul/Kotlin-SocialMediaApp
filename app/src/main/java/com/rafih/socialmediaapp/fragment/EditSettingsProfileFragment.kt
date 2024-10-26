@@ -27,11 +27,10 @@ class EditSettingsProfileFragment : Fragment(R.layout.fragment_edit_settings_pro
 
     private var _binding : FragmentEditSettingsProfileBinding? = null
     private val binding get() = _binding!!
-
     private val userViewModel: UserViewModel by activityViewModels()
     private val args: EditSettingsProfileFragmentArgs by navArgs()
-    private lateinit var navController: NavController
 
+    private lateinit var navController: NavController
     private lateinit var userData: User
 
     override fun onCreateView(
@@ -47,26 +46,39 @@ class EditSettingsProfileFragment : Fragment(R.layout.fragment_edit_settings_pro
         userData = args.userData
         navController = findNavController()
 
-        binding.editTextEmailProfile.setText(userData.email)
-        binding.editTextFirstNameProfile.setText(userData.first_name)
-        binding.editTextLastNameProfile.setText(userData.last_name)
+        setUpTextView()
 
+        submitButton()
+    }
+
+    private fun submitButton() {
         binding.buttonSubmitSettingsProfile.setOnClickListener {
             val firstName = binding.editTextFirstNameProfile.text.toString()
             val lastName = binding.editTextLastNameProfile.text.toString()
             val email = binding.editTextEmailProfile.text.toString()
 
+
             if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty()){
                 lifecycleScope.launch {
-                    userViewModel.changeProfile(firstName,lastName,email){
-                        Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
-                        navController.navigate(R.id.action_editSettingsProfileFragment_to_settingsProfileFragment)
-                    }
+                    saveUserChange(firstName,lastName,email)
                 }
             } else {
                 Toast.makeText(context, "Tidak Boleh Ada yang kosong", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private suspend fun saveUserChange(firstName:String, lastName:String ,email:String) {
+        userViewModel.changeProfile(firstName,lastName,email){
+            Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            navController.navigate(R.id.action_editSettingsProfileFragment_to_settingsProfileFragment)
+        }
+    }
+
+    private fun setUpTextView() {
+        binding.editTextEmailProfile.setText(userData.email)
+        binding.editTextFirstNameProfile.setText(userData.first_name)
+        binding.editTextLastNameProfile.setText(userData.last_name)
     }
 
 

@@ -35,6 +35,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
+        //ProgressBar Loading
         userViewModel.loadingApi.observe(viewLifecycleOwner){
             if (it){
                 binding.progressBarLogin.visibility = View.VISIBLE
@@ -43,24 +44,32 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
         }
 
+        buttonLogin()
+
+        binding.buttonToDaftar.setOnClickListener {
+            navController.navigate(R.id.action_loginFragment_to_registerFragment)
+        }
+    }
+
+    private fun buttonLogin() {
         binding.buttonLogin.setOnClickListener {
             val username = binding.editTextLogNama.text.toString()
             val password = binding.editTextLogPassword.text.toString()
 
             if (username.isNotEmpty() && password.isNotEmpty()){
                 lifecycleScope.launch {
-                    userViewModel.postLoginUser(requireContext(), username, password) {
-                        Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
-                        if (it.access_token.isNotEmpty()) {
-                            navController.navigate(R.id.action_loginFragment_to_profileFragment)
-                        }
-                    }
+                    userLogin(username,password)
                 }
             }
         }
+    }
 
-        binding.buttonToDaftar.setOnClickListener {
-            navController.navigate(R.id.action_loginFragment_to_registerFragment)
+    private suspend fun userLogin(username: String, password: String) {
+        userViewModel.postLoginUser(requireContext(), username, password) {
+            Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            if (it.access_token.isNotEmpty()) {
+                navController.navigate(R.id.action_loginFragment_to_profileFragment)
+            }
         }
     }
 

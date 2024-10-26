@@ -20,8 +20,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private var _binding : FragmentProfileBinding? = null
     private val binding get() = _binding!!
-
     private val userViewModel: UserViewModel by activityViewModels()
+
     private lateinit var navController: NavController
     private lateinit var userJWT: String
 
@@ -37,6 +37,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
+        //get jwt token
         userJWT = userViewModel.userJWToken.value.toString()
 
         if (userJWT.isEmpty() || userJWT == "null") {
@@ -44,6 +45,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             navController.navigate(R.id.action_profileFragment_to_loginFragment)
         } else {
             lifecycleScope.launch {
+                //set userData livedata
                 userViewModel.setUserData(userJWT) {
                     Toast.makeText(
                         context,
@@ -56,18 +58,23 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
+        // ProgressBar Loading
         userViewModel.loadingApi.observe(viewLifecycleOwner){
             if (it){
-                binding.progressBar.visibility = View.VISIBLE
-                binding.cardView.visibility = View.GONE
-                binding.textViewUsername.visibility = View.GONE
-                binding.imageViewProfilePic.visibility = View.GONE
+                binding.apply {
+                    progressBar.visibility = View.VISIBLE
+                    cardView.visibility = View.GONE
+                    textViewUsername.visibility = View.GONE
+                    imageViewProfilePic.visibility = View.GONE
+                }
             } else {
-                binding.progressBar.visibility = View.GONE
-                binding.cardView.visibility = View.VISIBLE
-                binding.textViewUsername.visibility = View.VISIBLE
-                binding.imageViewProfilePic.visibility = View.VISIBLE
-                binding.textViewUsername.text = userViewModel.userData.value?.username
+                binding.apply {
+                    progressBar.visibility = View.GONE
+                    cardView.visibility = View.VISIBLE
+                    textViewUsername.visibility = View.VISIBLE
+                    imageViewProfilePic.visibility = View.VISIBLE
+                    textViewUsername.text = userViewModel.userData.value?.username
+                }
             }
         }
 

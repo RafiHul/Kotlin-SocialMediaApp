@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         setUpPager()
 
+        //get jwt token from splashscreen
         val jwttoken = intent.getStringExtra("jwttoken").toString()
         userViewModel.setJWToken(jwttoken)
     }

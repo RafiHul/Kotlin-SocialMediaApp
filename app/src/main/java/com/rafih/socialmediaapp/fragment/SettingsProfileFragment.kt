@@ -27,10 +27,9 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
 
     private var _binding: FragmentSettingsProfileBinding? = null
     private val binding get() = _binding!!
-
     private val userViewModel: UserViewModel by activityViewModels()
-    private lateinit var navController: NavController
 
+    private lateinit var navController: NavController
     private lateinit var userData: User
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,6 +44,7 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
+        //try get userData from livedata
         try {
             userData = userViewModel.userData.value!!
         } catch (e:NullPointerException){

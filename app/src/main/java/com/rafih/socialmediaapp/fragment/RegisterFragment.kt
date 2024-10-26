@@ -36,6 +36,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
+        //progressBar Loading
         userViewModel.loadingApi.observe(viewLifecycleOwner){
             if (it){
                 binding.progressBarRegister.visibility = View.VISIBLE
