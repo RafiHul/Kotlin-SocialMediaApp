@@ -2,12 +2,18 @@ package com.rafih.socialmediaapp.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -15,6 +21,7 @@ import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentEditSettingsProfileBinding
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
+import kotlinx.coroutines.launch
 
 class EditSettingsProfileFragment : Fragment(R.layout.fragment_edit_settings_profile) {
 
@@ -43,6 +50,23 @@ class EditSettingsProfileFragment : Fragment(R.layout.fragment_edit_settings_pro
         binding.editTextEmailProfile.setText(userData.email)
         binding.editTextFirstNameProfile.setText(userData.first_name)
         binding.editTextLastNameProfile.setText(userData.last_name)
+
+        binding.buttonSubmitSettingsProfile.setOnClickListener {
+            val firstName = binding.editTextFirstNameProfile.text.toString()
+            val lastName = binding.editTextLastNameProfile.text.toString()
+            val email = binding.editTextEmailProfile.text.toString()
+
+            if (firstName.isNotEmpty() && lastName.isNotEmpty() && email.isNotEmpty()){
+                lifecycleScope.launch {
+                    userViewModel.changeProfile(firstName,lastName,email){
+                        Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+                        navController.navigate(R.id.action_editSettingsProfileFragment_to_settingsProfileFragment)
+                    }
+                }
+            } else {
+                Toast.makeText(context, "Tidak Boleh Ada yang kosong", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
 

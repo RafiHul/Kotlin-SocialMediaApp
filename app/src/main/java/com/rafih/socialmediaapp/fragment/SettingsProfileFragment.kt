@@ -55,41 +55,16 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
 
 
         userViewModel.userData.observe(viewLifecycleOwner){
-            binding.textViewEmail.text = it.email
-        }
-
-        binding.textViewEmail.apply {
-            text = userData.email
-            setOnClickListener(changeProfileDialog(userData.email){
-                lifecycleScope.launch {
-                    userViewModel.changeProfileEmail(it.toString()){
-                        Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
-        }
-//        binding.textViewFirstName.apply {
-//            text = userData.first_name
-//            setOnClickListener(text){
-//
-//            }
-//        }
-//        binding.textViewLastName.apply {
-//            text = userData.last_name
-//            setOnClickListener(text){
-//
-//            }
-//        }
-    }
-
-    fun changeProfileDialog(fillDialogInput:String, action: (CharSequence) -> Unit) = View.OnClickListener {
-        MaterialDialog(requireContext()).show {
-            input(prefill = fillDialogInput){ materialDialog,Text ->
-                //insert Api
-                action(Text)
+            binding.apply {
+                textViewFirstName.text = it.first_name
+                textViewLastName.text = it.last_name
+                textViewEmail.text = it.email
             }
-            positiveButton(R.string.simpan)
-            negativeButton(R.string.batal)
+        }
+
+        binding.buttonEditProfile.setOnClickListener {
+            val direction = SettingsProfileFragmentDirections.actionSettingsProfileFragmentToEditSettingsProfileFragment(userData)
+            navController.navigate(direction)
         }
     }
 
