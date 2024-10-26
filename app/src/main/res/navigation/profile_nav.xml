@@ -67,5 +67,9 @@
         <action
             android:id="@+id/action_editSettingsProfileFragment_to_settingsProfileFragment"
             app:destination="@id/settingsProfileFragment" />
+        <argument
+            android:name="userData"
+            app:argType="com.rafih.socialmediaapp.model.User"
+            app:nullable="false" />
     </fragment>
 </navigation>
