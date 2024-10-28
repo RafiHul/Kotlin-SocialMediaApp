@@ -70,7 +70,7 @@ class EditSettingsProfileFragment : Fragment(R.layout.fragment_edit_settings_pro
 
     private suspend fun saveUserChange(firstName:String, lastName:String ,email:String) {
         userViewModel.changeProfile(firstName,lastName,email){
-            Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             navController.navigate(R.id.action_editSettingsProfileFragment_to_settingsProfileFragment)
         }
     }

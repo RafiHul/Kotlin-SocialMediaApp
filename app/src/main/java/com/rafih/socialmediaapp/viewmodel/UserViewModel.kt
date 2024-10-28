@@ -37,13 +37,14 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         }
     }
 
-    suspend fun setUserData(jwt: String,action: (String) -> Unit){
+    suspend fun setUserData(action: (String) -> Unit){
         withLoading {
-            val get = repository.getUserData("Bearer $jwt")
+            val get = repository.getUserData(getJwtBearer())
+            Log.d("jwtToken viewmodel",getJwtBearer())
             if (get.isSuccessful){
                 _userData.value = get.body()
             } else {
-                action(get.message())
+                action(get.raw().message)
             }
         }
     }
@@ -78,7 +79,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
 
     suspend fun changeProfile(firstName:String, lastName:String ,email:String,action: (Msg) -> Unit){
         try {
-            val jwtBearer = "Bearer ${userJWToken.value.toString()}"
+            val jwtBearer = getJwtBearer()
             val post = repository.changeProfile(jwtBearer, firstName, lastName, email)
             val postBody = post.body()!!
             if (post.isSuccessful){
@@ -92,6 +93,23 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
             Log.d("change email eror",e.message.toString())
         }
     }
+
+    suspend fun changePassword(newPassword: String,action: (Msg) -> Unit){
+        try{
+            val jwtToken = getJwtBearer()
+            val post = repository.changePassword(jwtToken,newPassword)
+            val postBody = post.body()
+            if(post.isSuccessful && postBody != null){
+                action(postBody)
+            } else {
+                action(Msg("failed","gagal post"))
+            }
+        } catch (e:Exception){
+            action(Msg("failed","Failed To Connect"))
+        }
+    }
+
+    private fun getJwtBearer(): String = "Bearer ${userJWToken.value.toString()}"
 
     fun setLoadingApiTrue(){
         _loadingApi.value = false

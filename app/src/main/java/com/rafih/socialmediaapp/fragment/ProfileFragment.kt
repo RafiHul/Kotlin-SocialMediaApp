@@ -46,12 +46,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         } else {
             lifecycleScope.launch {
                 //set userData livedata
-                userViewModel.setUserData(userJWT) {
+                userViewModel.setUserData {
                     Toast.makeText(
                         context,
-                        "Gagal memuat akun, harap login ulang",
+                        it,
                         Toast.LENGTH_SHORT
                     ).show()
+                    Log.d("eror get",it)
                     userViewModel.clearLoginJWT(requireContext())
                     navController.navigate(R.id.action_profileFragment_to_loginFragment)
                 }

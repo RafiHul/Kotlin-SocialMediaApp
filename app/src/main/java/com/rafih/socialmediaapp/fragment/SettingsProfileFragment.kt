@@ -3,6 +3,7 @@ package com.rafih.socialmediaapp.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.renderscript.ScriptGroup.Input
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -65,6 +66,20 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
         binding.buttonEditProfile.setOnClickListener {
             val direction = SettingsProfileFragmentDirections.actionSettingsProfileFragmentToEditSettingsProfileFragment(userData)
             navController.navigate(direction)
+        }
+
+        binding.ButtonChangePassword.setOnClickListener {
+            MaterialDialog(requireContext()).show {
+                input(hint = "Password Baru"){ materialDialog, Text ->
+                    lifecycleScope.launch {
+                        userViewModel.changePassword(Text.toString()){
+                            Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                positiveButton(R.string.simpan)
+                negativeButton(R.string.batal)
+            }
         }
     }
 
