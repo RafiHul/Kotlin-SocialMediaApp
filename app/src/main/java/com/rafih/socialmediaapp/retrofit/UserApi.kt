@@ -40,4 +40,11 @@ interface UserApi {
         @Field("lastName") lastName: String,
         @Field("email") email: String
     ): Response<User>
+
+    @FormUrlEncoded
+    @POST("/changepassword")
+    suspend fun changePassword(
+        @Header("Authorization") jwtToken: String,
+        @Field("newPassword") newPassword: String
+    ): Response<Msg>
 }
