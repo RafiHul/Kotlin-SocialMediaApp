@@ -1,19 +1,23 @@
 package com.rafih.socialmediaapp.viewmodel
 
 import android.app.Application
+import android.content.ContentResolver
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.model.Msg
 import com.rafih.socialmediaapp.model.MsgWithToken
 import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -109,7 +113,26 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         }
     }
 
-    private fun getJwtBearer(): String = "Bearer ${userJWToken.value.toString()}"
+    suspend fun changeProfilePic(uri: Uri, contentResolver:ContentResolver, action: (Msg) -> Unit) {
+
+        val byteArray = uri.toByteArray(contentResolver) //convert image to byte
+        val mimeType = contentResolver.getType(uri) ?: "image/jpeg" //check image type
+        val requestBody = byteArray.toRequestBody(mimeType.toMediaTypeOrNull())
+        val multipartBody = MultipartBody.Part.createFormData("image", "image123.jpg", requestBody)
+
+        try {
+            val jwtToken = getJwtBearer()
+            val post = repository.changeProfilePic(jwtToken, multipartBody)
+            val postBody = post.body()
+            if (post.isSuccessful && postBody != null) {
+                action(postBody)
+            } else {
+                action(Msg("failed", "gagal post"))
+            }
+        } catch (e: Exception) {
+            action(Msg("failed", "Failed To Connect"))
+        }
+    }
 
     fun setLoadingApiTrue(){
         _loadingApi.value = false
@@ -127,4 +150,6 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
     }
 
     fun getUserLoginJWT(context: Context) = repository.getLoginData(context)
+
+    private fun getJwtBearer(): String = "Bearer ${userJWToken.value.toString()}"
 }

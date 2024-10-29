@@ -3,13 +3,15 @@ package com.rafih.socialmediaapp.retrofit
 import com.rafih.socialmediaapp.model.Msg
 import com.rafih.socialmediaapp.model.MsgWithToken
 import com.rafih.socialmediaapp.model.User
-import com.rafih.socialmediaapp.model.UserList
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface UserApi {
 
@@ -46,5 +48,12 @@ interface UserApi {
     suspend fun changePassword(
         @Header("Authorization") jwtToken: String,
         @Field("newPassword") newPassword: String
+    ): Response<Msg>
+
+    @Multipart
+    @POST("/changeprofilepic")
+    suspend fun changeProfilePic(
+        @Header("Authorization") jwtToken: String,
+        @Part image: MultipartBody.Part
     ): Response<Msg>
 }

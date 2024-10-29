@@ -77,11 +77,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             } else {
                 binding.apply {
+                    textViewUsername.text = userViewModel.userData.value?.username
                     progressBar.visibility = View.GONE
                     cardView.visibility = View.VISIBLE
                     textViewUsername.visibility = View.VISIBLE
                     imageViewProfilePic.visibility = View.VISIBLE
-                    textViewUsername.text = userViewModel.userData.value?.username
                 }
             }
         }
@@ -104,7 +104,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         ActivityResultContracts.GetContent() //ini akan membuka intent untuk mengambil file
     ) { uri: Uri? ->
         uri?.let {
-         Log.d("imageup",uri.toString())
+            lifecycleScope.launch {
+                userViewModel.changeProfilePic(uri,requireActivity().contentResolver){
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
