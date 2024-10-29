@@ -76,4 +76,6 @@ dependencies {
     ksp("com.google.dagger:hilt-android-compiler:2.52")
 
     implementation("com.afollestad.material-dialogs:input:3.3.0")
+
+    implementation("com.vanniktech:android-image-cropper:4.6.0")
 }

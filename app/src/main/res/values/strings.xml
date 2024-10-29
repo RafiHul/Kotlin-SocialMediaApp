@@ -7,4 +7,6 @@
     <string name="email_textview">Email: %1$s</string>
     <string name="simpan">Simpan</string>
     <string name="batal">Batal</string>
+    <string name="default_crop_label_text">Sample crop label</string>
+    <string name="reset">Reset Crop Rect</string>
 </resources>
