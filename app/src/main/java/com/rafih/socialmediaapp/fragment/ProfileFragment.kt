@@ -1,11 +1,18 @@
 package com.rafih.socialmediaapp.fragment
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -86,6 +93,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.buttonLogout.setOnClickListener {
             userViewModel.clearLoginJWT(requireContext())
             navController.navigate(R.id.action_profileFragment_to_loginFragment)
+        }
+
+        binding.imageViewProfilePic.setOnClickListener{
+            pickImageLauncher.launch("image/*")
+        }
+    }
+
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent() //ini akan membuka intent untuk mengambil file
+    ) { uri: Uri? ->
+        uri?.let {
+         Log.d("imageup",uri.toString())
         }
     }
 
