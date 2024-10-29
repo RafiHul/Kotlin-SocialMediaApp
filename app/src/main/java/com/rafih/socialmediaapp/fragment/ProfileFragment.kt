@@ -104,11 +104,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         ActivityResultContracts.GetContent() //ini akan membuka intent untuk mengambil file
     ) { uri: Uri? ->
         uri?.let {
-            lifecycleScope.launch {
-                userViewModel.changeProfilePic(uri,requireActivity().contentResolver){
-                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-                }
-            }
+            val direction = ProfileFragmentDirections.actionProfileFragmentToCropImageFragment(uri)
+            findNavController().navigate(direction)
+//            lifecycleScope.launch {
+//                userViewModel.changeProfilePic(uri,requireActivity().contentResolver){
+//                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+//                }
+//            }
         }
     }
 

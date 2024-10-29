@@ -30,6 +30,18 @@
             <LayoutPositions>
               <option name="myPositions">
                 <map>
+                  <entry key="cropImageFragment">
+                    <value>
+                      <LayoutPositions>
+                        <option name="myPosition">
+                          <Point>
+                            <option name="x" value="43" />
+                            <option name="y" value="-316" />
+                          </Point>
+                        </option>
+                      </LayoutPositions>
+                    </value>
+                  </entry>
                   <entry key="editSettingsProfileFragment">
                     <value>
                       <LayoutPositions>
@@ -38,6 +50,15 @@
                             <option name="x" value="498" />
                             <option name="y" value="36" />
                           </Point>
+                        </option>
+                        <option name="myPositions">
+                          <map>
+                            <entry key="action_editSettingsProfileFragment_to_settingsProfileFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
+                          </map>
                         </option>
                       </LayoutPositions>
                     </value>
@@ -79,6 +100,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_profileFragment_to_cropImageFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_profileFragment_to_loginFragment">
                               <value>
                                 <LayoutPositions />
@@ -136,6 +162,11 @@
                         </option>
                         <option name="myPositions">
                           <map>
+                            <entry key="action_settingsProfileFragment_to_editSettingsProfileFragment">
+                              <value>
+                                <LayoutPositions />
+                              </value>
+                            </entry>
                             <entry key="action_settingsProfileFragment_to_loginFragment">
                               <value>
                                 <LayoutPositions />
