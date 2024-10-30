@@ -84,5 +84,8 @@
             android:name="userPic"
             app:argType="android.net.Uri"
             app:nullable="false" />
+        <action
+            android:id="@+id/action_cropImageFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
 </navigation>

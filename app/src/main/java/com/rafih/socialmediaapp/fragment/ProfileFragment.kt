@@ -106,11 +106,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         uri?.let {
             val direction = ProfileFragmentDirections.actionProfileFragmentToCropImageFragment(uri)
             findNavController().navigate(direction)
-//            lifecycleScope.launch {
-//                userViewModel.changeProfilePic(uri,requireActivity().contentResolver){
-//                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
-//                }
-//            }
         }
     }
 

@@ -11,12 +11,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavArgs
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentCropImageBinding
+import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 //MenuProvider,
@@ -29,8 +34,10 @@ class CropImageFragment :
 
     private var _binding : FragmentCropImageBinding? = null
     private val binding get() = _binding!!
-
     private val args: CropImageFragmentArgs by navArgs()
+    private val userViewModel: UserViewModel by activityViewModels()
+
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,21 +50,46 @@ class CropImageFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navController = findNavController()
         val userPic = args.userPic
-        binding.cropImageView.cropRect = Rect(100, 300, 500, 1200)
+        binding.cropImageView.setAspectRatio(1,1)
+        binding.cropImageView.setFixedAspectRatio(true)
+
         binding.cropImageView.setImageUriAsync(userPic)
+
+        binding.cropImageView.setOnCropImageCompleteListener(this)
+        binding.cropImageView.setOnSetImageUriCompleteListener(this)
+
+        binding.reset.setOnClickListener{
+            binding.cropImageView.croppedImageAsync()
+        }
     }
 
     override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception?) {
-        return
+        if (error != null){
+            Toast.makeText(context, "Gagal memuat gambar, harap coba lagi", Toast.LENGTH_SHORT).show()
+            navController.navigate(R.id.action_cropImageFragment_to_profileFragment)
+        }
     }
 
     override fun onCropImageComplete(view: CropImageView, result: CropImageView.CropResult) {
-        return
+        val uri = result.uriContent
+
+        uri?.let {
+            lifecycleScope.launch {
+                userViewModel.changeProfilePic(it,requireActivity().contentResolver){
+                    Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
+                    navController.navigate(R.id.action_cropImageFragment_to_profileFragment)
+                }
+            }
+        } ?: Toast.makeText(context, "Gagal menyimpan gambar :(", Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.cropImageView.setOnCropImageCompleteListener(null)
+        binding.cropImageView.setOnSetImageUriCompleteListener(null)
         _binding = null
     }
 }
