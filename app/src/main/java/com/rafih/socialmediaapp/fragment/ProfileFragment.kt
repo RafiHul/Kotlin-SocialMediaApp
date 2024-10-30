@@ -19,6 +19,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.rafih.socialmediaapp.R
+import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.databinding.FragmentProfileBinding
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
@@ -104,8 +105,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         ActivityResultContracts.GetContent() //ini akan membuka intent untuk mengambil file
     ) { uri: Uri? ->
         uri?.let {
+            val fileSize = uri.toByteArray(requireActivity().contentResolver).size
             val direction = ProfileFragmentDirections.actionProfileFragmentToCropImageFragment(uri)
-            findNavController().navigate(direction)
+
+            if (fileSize >= 2000000){ //1MB
+                Toast.makeText(context, "Ukuran File Tidak Boleh lebih dari 1MB", Toast.LENGTH_SHORT).show()
+            } else {
+                findNavController().navigate(direction)
+            }
         }
     }
 

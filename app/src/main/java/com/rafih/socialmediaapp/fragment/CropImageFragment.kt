@@ -68,13 +68,13 @@ class CropImageFragment :
     override fun onSetImageUriComplete(view: CropImageView, uri: Uri, error: Exception?) {
         if (error != null){
             Toast.makeText(context, "Gagal memuat gambar, harap coba lagi", Toast.LENGTH_SHORT).show()
+            Log.d("errmsg cropimgfg",error.message.toString())
             navController.navigate(R.id.action_cropImageFragment_to_profileFragment)
         }
     }
 
     override fun onCropImageComplete(view: CropImageView, result: CropImageView.CropResult) {
         val uri = result.uriContent
-
         uri?.let {
             lifecycleScope.launch {
                 userViewModel.changeProfilePic(it,requireActivity().contentResolver){
