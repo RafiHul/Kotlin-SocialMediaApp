@@ -1,6 +1,7 @@
 package com.rafih.socialmediaapp.retrofit
 
 import com.rafih.socialmediaapp.model.Msg
+import com.rafih.socialmediaapp.model.MsgData
 import com.rafih.socialmediaapp.model.MsgWithToken
 import com.rafih.socialmediaapp.model.User
 import okhttp3.MultipartBody
@@ -56,4 +57,9 @@ interface UserApi {
         @Header("Authorization") jwtToken: String,
         @Part image: MultipartBody.Part
     ): Response<Msg>
+
+    @GET("/getprofilepic")
+    suspend fun getProfilePic(
+        @Header("Authorization") jwtToken: String,
+    ): Response<MsgData>
 }
