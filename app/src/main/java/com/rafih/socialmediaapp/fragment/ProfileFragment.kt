@@ -21,6 +21,7 @@ import androidx.navigation.fragment.findNavController
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.databinding.FragmentProfileBinding
+import com.rafih.socialmediaapp.model.User
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
@@ -55,11 +56,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             lifecycleScope.launch {
                 //set userData livedata
                 userViewModel.setUserData {
-                    Toast.makeText(
-                        context,
-                        it,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show() //disini ada error
                     Log.d("eror get",it)
                     userViewModel.clearLoginJWT(requireContext())
                     navController.navigate(R.id.action_profileFragment_to_loginFragment)
@@ -78,7 +75,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             } else {
                 binding.apply {
-                    textViewUsername.text = userViewModel.userData.value?.username
                     progressBar.visibility = View.GONE
                     cardView.visibility = View.VISIBLE
                     textViewUsername.visibility = View.VISIBLE
@@ -87,6 +83,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
+        userViewModel.userData.observe(viewLifecycleOwner){
+            binding.textViewUsername.text = it.username
+        }
+        userViewModel.userProfilePic.observe(viewLifecycleOwner){
+            it?.let {
+                binding.imageViewProfilePic.setImageBitmap(it)
+            } ?: binding.imageViewProfilePic.setImageResource(R.drawable.baseline_account_circle_24)
+        }
         binding.buttonSettingsProfile.setOnClickListener {
             navController.navigate(R.id.action_profileFragment_to_settingsProfileFragment)
         }
