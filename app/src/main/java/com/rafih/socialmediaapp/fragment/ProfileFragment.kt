@@ -56,10 +56,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             lifecycleScope.launch {
                 //set userData livedata
                 userViewModel.setUserData {
-                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show() //disini ada error
-                    Log.d("eror get",it)
-                    userViewModel.clearLoginJWT(requireContext())
-                    navController.navigate(R.id.action_profileFragment_to_loginFragment)
+                    if (it.status == "failed") {
+                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show() //disini ada error
+                        Log.d("eror get", it.toString())
+                        userViewModel.clearLoginJWT(requireContext())
+                        navController.navigate(R.id.action_profileFragment_to_loginFragment)
+                    }
                 }
             }
         }

@@ -11,6 +11,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rafih.socialmediaapp.Utils.decodeToByteArray
+import com.rafih.socialmediaapp.Utils.toBitMap
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.model.Msg
 import com.rafih.socialmediaapp.model.MsgData
@@ -48,16 +49,16 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         }
     }
 
-    suspend fun setUserData(action: (String) -> Unit){
+    suspend fun setUserData(action: (Msg) -> Unit){
         withLoading {
             val get = repository.getUserData(getJwtBearer())
             if (get.isSuccessful){
                 _userData.value = get.body()
                 getProfilePic {
-                    Log.d("asuwwww eror iki",it?.message.toString())
+                    action(Msg("success",it?.message.toString()))
                 }
             } else {
-                action(get.raw().message)
+                action(Msg("failed",get.message()))
             }
         }
     }
@@ -135,6 +136,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
             val postBody = post.body()
             if (post.isSuccessful && postBody != null) {
                 action(postBody)
+                _userProfilePic.value = byteArray.toBitMap()
             } else {
                 action(Msg("failed", "gagal post"))
             }
@@ -145,20 +147,17 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
 
     suspend fun getProfilePic(action: (MsgData?) -> Unit){
         try {
+            _userProfilePic.value = null //reset pic
             val jwt = getJwtBearer()
             val getPic = repository.getProfilePic(jwt)
             val body = getPic.body()
-            Log.d("bodyprofilepic",body.toString())
             if (getPic.isSuccessful && getPic.body()?.data != null) {
                 val byteArrayImage = body?.data?.imageEncode?.decodeToByteArray()!! //decode base64 to bytearray
-                val bitMapImage = BitmapFactory.decodeByteArray(byteArrayImage, 0, byteArrayImage.size) //convert to bitmap
+                val bitMapImage = byteArrayImage.toBitMap() //convert to bitmap
 
                 _userProfilePic.value = bitMapImage
-                Log.d("dummyuserdat viewmodel", bitMapImage.toString())
                 action(body)
             } else {
-
-                _userProfilePic.value = null
                 action(body)
             }
         } catch (e: Exception){
