@@ -1,4 +1,4 @@
-package com.rafih.socialmediaapp.model
+package com.rafih.socialmediaapp.model.response
 
 data class MsgData (
     val status: String,

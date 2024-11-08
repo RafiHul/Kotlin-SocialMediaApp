@@ -1,9 +1,9 @@
 package com.rafih.socialmediaapp.retrofit
 
-import com.rafih.socialmediaapp.model.Msg
-import com.rafih.socialmediaapp.model.MsgData
-import com.rafih.socialmediaapp.model.MsgWithToken
-import com.rafih.socialmediaapp.model.User
+import com.rafih.socialmediaapp.model.response.Msg
+import com.rafih.socialmediaapp.model.response.MsgData
+import com.rafih.socialmediaapp.model.response.MsgWithToken
+import com.rafih.socialmediaapp.model.databases.User
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Field

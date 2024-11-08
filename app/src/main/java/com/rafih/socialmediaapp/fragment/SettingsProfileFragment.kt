@@ -3,8 +3,6 @@ package com.rafih.socialmediaapp.fragment
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.renderscript.ScriptGroup.Input
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +17,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentSettingsProfileBinding
-import com.rafih.socialmediaapp.model.User
+import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 

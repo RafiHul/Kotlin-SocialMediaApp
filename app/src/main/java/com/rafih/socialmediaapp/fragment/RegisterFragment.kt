@@ -12,7 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentRegisterBinding
-import com.rafih.socialmediaapp.model.User
+import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 

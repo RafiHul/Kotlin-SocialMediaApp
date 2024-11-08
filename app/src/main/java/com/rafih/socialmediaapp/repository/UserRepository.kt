@@ -3,12 +3,12 @@ package com.rafih.socialmediaapp.repository
 import android.content.Context
 import com.rafih.socialmediaapp.Utils.clearLoginInfo
 import com.rafih.socialmediaapp.Utils.getLoginToken
-import com.rafih.socialmediaapp.model.User
+import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.retrofit.RetrofitInstance
 import com.rafih.socialmediaapp.Utils.saveLoginToken
-import com.rafih.socialmediaapp.model.Msg
-import com.rafih.socialmediaapp.model.MsgData
-import com.rafih.socialmediaapp.model.MsgWithToken
+import com.rafih.socialmediaapp.model.response.Msg
+import com.rafih.socialmediaapp.model.response.MsgData
+import com.rafih.socialmediaapp.model.response.MsgWithToken
 import okhttp3.MultipartBody
 import retrofit2.Response
 

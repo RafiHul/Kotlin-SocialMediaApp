@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
@@ -13,10 +12,11 @@ import androidx.lifecycle.viewModelScope
 import com.rafih.socialmediaapp.Utils.decodeToByteArray
 import com.rafih.socialmediaapp.Utils.toBitMap
 import com.rafih.socialmediaapp.Utils.toByteArray
-import com.rafih.socialmediaapp.model.Msg
-import com.rafih.socialmediaapp.model.MsgData
-import com.rafih.socialmediaapp.model.MsgWithToken
-import com.rafih.socialmediaapp.model.User
+import com.rafih.socialmediaapp.model.response.Msg
+import com.rafih.socialmediaapp.model.response.MsgData
+import com.rafih.socialmediaapp.model.response.MsgWithToken
+import com.rafih.socialmediaapp.model.databases.User
+import com.rafih.socialmediaapp.model.response.DataImage
 import com.rafih.socialmediaapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

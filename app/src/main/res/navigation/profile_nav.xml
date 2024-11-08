@@ -72,7 +72,7 @@
             app:destination="@id/settingsProfileFragment" />
         <argument
             android:name="userData"
-            app:argType="com.rafih.socialmediaapp.model.User"
+            app:argType="com.rafih.socialmediaapp.model.databases.User"
             app:nullable="false" />
     </fragment>
     <fragment

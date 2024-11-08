@@ -1,4 +1,4 @@
-package com.rafih.socialmediaapp.model
+package com.rafih.socialmediaapp.model.databases
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

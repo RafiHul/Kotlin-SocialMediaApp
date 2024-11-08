@@ -1,17 +1,12 @@
 package com.rafih.socialmediaapp.fragment
 
-import android.app.Activity
-import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -21,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.databinding.FragmentProfileBinding
-import com.rafih.socialmediaapp.model.User
+import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
@@ -114,8 +109,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             val fileSize = uri.toByteArray(requireActivity().contentResolver).size
             val direction = ProfileFragmentDirections.actionProfileFragmentToCropImageFragment(uri)
 
-            if (fileSize >= 2000000){ //1MB
-                Toast.makeText(context, "Ukuran File Tidak Boleh lebih dari 1MB", Toast.LENGTH_SHORT).show()
+            if (fileSize >= 2000000){ //2MB
+                Toast.makeText(context, "Ukuran File Tidak Boleh lebih dari 2MB", Toast.LENGTH_SHORT).show()
             } else {
                 findNavController().navigate(direction)
             }

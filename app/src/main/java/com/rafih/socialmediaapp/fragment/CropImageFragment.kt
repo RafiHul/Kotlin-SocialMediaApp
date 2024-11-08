@@ -1,6 +1,5 @@
 package com.rafih.socialmediaapp.fragment
 
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -9,15 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavArgs
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentCropImageBinding
