@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rafih.socialmediaapp.adapter.FragmentPagerAdapter
 import com.rafih.socialmediaapp.databinding.ActivityMainBinding
@@ -38,6 +39,11 @@ class MainActivity : AppCompatActivity() {
         //get jwt token from splashscreen
         val jwttoken = intent.getStringExtra("jwttoken").toString()
         userViewModel.setJWToken(jwttoken)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Glide.get(this).clearMemory()
     }
 
     private fun setUpPager() {

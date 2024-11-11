@@ -11,9 +11,6 @@ import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentBerandaBinding
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class BerandaFragment : Fragment(R.layout.fragment_beranda) {
 
@@ -32,7 +29,7 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val userPostAdapter = UserPostAdapter()
+        val userPostAdapter = UserPostAdapter(requireContext())
         binding.recyclerViewUserPost.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             adapter = userPostAdapter

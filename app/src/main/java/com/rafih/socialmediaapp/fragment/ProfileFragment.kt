@@ -91,6 +91,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 .placeholder(R.drawable.baseline_account_circle_24)
                 .error(R.drawable.baseline_account_circle_24) //error drawable
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .circleCrop()
                 .into(binding.imageViewProfilePic)
         }
         binding.buttonSettingsProfile.setOnClickListener {
@@ -99,6 +100,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         binding.buttonLogout.setOnClickListener {
             userViewModel.clearLoginJWT(requireContext())
+            binding.imageViewProfilePic.setImageResource(R.drawable.baseline_account_circle_24)
             navController.navigate(R.id.action_profileFragment_to_loginFragment)
         }
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/imageViewProfilePicBeranda"
         android:layout_width="60dp"
         android:layout_height="60dp"
@@ -13,6 +13,16 @@
         android:src="@drawable/baseline_account_circle_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewUserPost"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/screenshot_20240819_105132"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitlePostBeranda" />
 
     <TextView
         android:id="@+id/textViewUsernameBeranda"
