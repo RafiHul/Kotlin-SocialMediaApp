@@ -9,14 +9,13 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.rafih.socialmediaapp.Utils.decodeToByteArray
+import com.rafih.socialmediaapp.Utils.StringToImageBitmap
 import com.rafih.socialmediaapp.Utils.toBitMap
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgData
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import com.rafih.socialmediaapp.model.databases.User
-import com.rafih.socialmediaapp.model.response.DataImage
 import com.rafih.socialmediaapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -128,7 +127,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         val byteArray = uri.toByteArray(contentResolver) //convert image to byte
         val mimeType = contentResolver.getType(uri) ?: "image/jpeg" //check image type
         val requestBody = byteArray.toRequestBody(mimeType.toMediaTypeOrNull())
-        val multipartBody = MultipartBody.Part.createFormData("image", "image123.jpg", requestBody)
+        val multipartBody = MultipartBody.Part.createFormData("image", "image123.jpg", requestBody) // agar bisa di kirim ke request
 
         try {
             val jwtToken = getJwtBearer()
@@ -152,9 +151,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
             val getPic = repository.getProfilePic(jwt)
             val body = getPic.body()
             if (getPic.isSuccessful && getPic.body()?.data != null) {
-                val byteArrayImage = body?.data?.imageEncode?.decodeToByteArray()!! //decode base64 to bytearray
-                val bitMapImage = byteArrayImage.toBitMap() //convert to bitmap
-
+                val bitMapImage = StringToImageBitmap(body?.data?.imageEncode!!)//ini harus di aturrrr biar null safe
                 _userProfilePic.value = bitMapImage
                 action(body)
             } else {

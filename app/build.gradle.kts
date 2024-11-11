@@ -78,4 +78,6 @@ dependencies {
     implementation("com.afollestad.material-dialogs:input:3.3.0")
 
     implementation("com.vanniktech:android-image-cropper:4.6.0")
+
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 }

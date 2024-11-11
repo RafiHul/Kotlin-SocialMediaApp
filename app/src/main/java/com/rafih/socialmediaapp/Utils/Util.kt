@@ -18,3 +18,8 @@ fun String.decodeToByteArray(): ByteArray {
 fun ByteArray.toBitMap(): Bitmap? {
     return BitmapFactory.decodeByteArray(this,0,this.size)
 }
+
+fun StringToImageBitmap(str: String): Bitmap? {
+    val byteArrayImage = str.decodeToByteArray() //decode base64 to bytearray
+    return byteArrayImage.toBitMap() //convert to bitmap
+}

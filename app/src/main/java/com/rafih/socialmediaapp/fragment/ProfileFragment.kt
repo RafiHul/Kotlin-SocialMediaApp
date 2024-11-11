@@ -13,6 +13,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.databinding.FragmentProfileBinding
@@ -84,9 +86,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             binding.textViewUsername.text = it.username
         }
         userViewModel.userProfilePic.observe(viewLifecycleOwner){
-            it?.let {
-                binding.imageViewProfilePic.setImageBitmap(it)
-            } ?: binding.imageViewProfilePic.setImageResource(R.drawable.baseline_account_circle_24)
+            Glide.with(this)
+                .load(it)
+                .placeholder(R.drawable.baseline_account_circle_24)
+                .error(R.drawable.baseline_account_circle_24) //error drawable
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(binding.imageViewProfilePic)
         }
         binding.buttonSettingsProfile.setOnClickListener {
             navController.navigate(R.id.action_profileFragment_to_settingsProfileFragment)
