@@ -64,6 +64,6 @@ interface UserApi {
         @Header("Authorization") jwtToken: String,
     ): Response<MsgData>
 
-    @GET("/getUserPost")
+    @GET("/getuserpost")
     suspend fun getUserPost(): Response<UserPost>
 }
