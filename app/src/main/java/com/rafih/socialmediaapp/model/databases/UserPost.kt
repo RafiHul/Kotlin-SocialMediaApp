@@ -6,6 +6,7 @@ data class UserPost(
     val id: String,
     val image: String?,
     val title: String,
-    val userNamePost: String,
-    val userLike: Int
+    val usernamePost: String,
+    val userLike: Int,
+    val userProfilePicturePost : String
 )
