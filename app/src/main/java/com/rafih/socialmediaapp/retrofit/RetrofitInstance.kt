@@ -16,4 +16,8 @@ object RetrofitInstance {
     val getUserService: UserApi by lazy {
         retrofit.create(UserApi::class.java)
     }
+
+    val getPostService: PostApi by lazy {
+        retrofit.create(PostApi::class.java)
+    }
 }

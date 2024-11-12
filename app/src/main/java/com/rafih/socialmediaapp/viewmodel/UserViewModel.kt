@@ -10,6 +10,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.rafih.socialmediaapp.Utils.StringToImageBitmap
+import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
 import com.rafih.socialmediaapp.Utils.toBitMap
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.model.response.Msg
@@ -125,10 +126,8 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
 
     suspend fun changeProfilePic(uri: Uri, contentResolver:ContentResolver, action: (Msg) -> Unit) {
 
-        val byteArray = uri.toByteArray(contentResolver) //convert image to byte
-        val mimeType = contentResolver.getType(uri) ?: "image/jpeg" //check image type
-        val requestBody = byteArray.toRequestBody(mimeType.toMediaTypeOrNull())
-        val multipartBody = MultipartBody.Part.createFormData("image", "image123.jpg", requestBody) // agar bisa di kirim ke request
+        val multipartBody = uri.convertUriToMultiPart(contentResolver)
+        val byteArray = uri.toByteArray(contentResolver)
 
         try {
             val jwtToken = getJwtBearer()
@@ -180,5 +179,5 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
 
     fun getUserLoginJWT(context: Context) = repository.getLoginData(context)
 
-    private fun getJwtBearer(): String = "Bearer ${userJWToken.value.toString()}"
+    fun getJwtBearer(): String = "Bearer ${userJWToken.value.toString()}"
 }

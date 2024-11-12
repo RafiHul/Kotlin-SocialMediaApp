@@ -5,6 +5,7 @@ import com.rafih.socialmediaapp.model.response.MsgData
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.model.databases.Post
+import com.rafih.socialmediaapp.model.databases.PostItem
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Field
@@ -63,7 +64,4 @@ interface UserApi {
     suspend fun getProfilePic(
         @Header("Authorization") jwtToken: String,
     ): Response<MsgData>
-
-    @GET("/getuserpost")
-    suspend fun getPost(): Response<Post>
 }

@@ -5,6 +5,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 fun Uri.toByteArray(contentResolver: ContentResolver): ByteArray {
     val inputStream = contentResolver.openInputStream(this)
@@ -22,4 +25,13 @@ fun ByteArray.toBitMap(): Bitmap? {
 fun StringToImageBitmap(str: String): Bitmap? {
     val byteArrayImage = str.decodeToByteArray() //decode base64 to bytearray
     return byteArrayImage.toBitMap() //convert to bitmap
+}
+
+fun Uri.convertUriToMultiPart(contentResolver: ContentResolver): MultipartBody.Part {
+    val byteArray = this.toByteArray(contentResolver) //convert image to byte
+    val mimeType = contentResolver.getType(this) ?: "image/jpeg" //check image type
+    val requestBody = byteArray.toRequestBody(mimeType.toMediaTypeOrNull())
+    val multipartBody = MultipartBody.Part.createFormData("image", "image123.jpg", requestBody) // agar bisa di kirim ke request
+
+    return multipartBody
 }

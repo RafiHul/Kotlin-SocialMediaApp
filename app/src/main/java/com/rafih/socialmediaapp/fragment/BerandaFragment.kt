@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
@@ -39,6 +41,13 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
         activity?.let {
             postViewModel.Post.observe(viewLifecycleOwner){
                 userPostAdapter.differ.submitList(it)
+            }
+        }
+        binding.floatingActionButtonAddNewPost.setOnClickListener{
+            if(userViewModel.userJWToken.value?.isNotEmpty() == true) {
+                findNavController().navigate(R.id.action_berandaFragment_to_newUserPostFragment)
+            } else {
+                Toast.makeText(context, "Harap Login Terlebih dahulu", Toast.LENGTH_SHORT).show()
             }
         }
     }
