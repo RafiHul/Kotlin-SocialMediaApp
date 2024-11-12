@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.rafih.socialmediaapp.R
+import com.rafih.socialmediaapp.Utils.StringToImageBitmap
 import com.rafih.socialmediaapp.Utils.decodeToByteArray
 import com.rafih.socialmediaapp.Utils.toBitMap
 import com.rafih.socialmediaapp.databinding.RecyclerviewPostBinding
@@ -48,10 +49,11 @@ class UserPostAdapter(val context: Context): RecyclerView.Adapter<UserPostAdapte
                 binding.imageViewUserPost.visibility = View.GONE
             } else {
                 Glide.with(context)
-                    .load(currImage.decodeToByteArray())
+                    .load(StringToImageBitmap(currImage))
                     .error(R.drawable.baseline_error_24)
                     .placeholder(R.drawable.baseline_downloading_24)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL) //memberikan cache
+                    .centerInside()
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) //memberikan cache
                     .into(binding.imageViewUserPost)
             }
         }
