@@ -9,5 +9,14 @@
         android:id="@+id/berandaFragment"
         android:name="com.rafih.socialmediaapp.fragment.BerandaFragment"
         android:label="fragment_beranda"
-        tools:layout="@layout/fragment_beranda" />
+        tools:layout="@layout/fragment_beranda" >
+        <action
+            android:id="@+id/action_berandaFragment_to_newUserPostFragment"
+            app:destination="@id/newUserPostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newUserPostFragment"
+        android:name="com.rafih.socialmediaapp.fragment.NewUserPostFragment"
+        android:label="fragment_new_user_post"
+        tools:layout="@layout/fragment_new_user_post" />
 </navigation>
