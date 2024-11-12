@@ -16,7 +16,7 @@ import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgData
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import com.rafih.socialmediaapp.model.databases.User
-import com.rafih.socialmediaapp.model.databases.UserPost
+import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -39,9 +39,6 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
 
     private val _userJWToken: MutableLiveData<String> = MutableLiveData()
     val userJWToken = _userJWToken
-
-    private val _userPost: MutableLiveData<UserPost?> = MutableLiveData()
-    val userPost = _userPost
 
     suspend fun <T> withLoading(block: suspend () -> T):T{
         _loadingApi.value = true
@@ -163,18 +160,6 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
             }
         } catch (e: Exception){
             Log.d("erorgetpic viewmodel",e.message.toString())
-        }
-    }
-
-    suspend fun getUserPost(){
-        try {
-            val response = repository.getUserPost()
-            val body = response.body()
-            if(response.isSuccessful){
-                _userPost.value = body
-            }
-        } catch (e: Exception){
-            Log.d("failed","gagal memuat beranda")
         }
     }
 

@@ -1,6 +1,7 @@
 package com.rafih.socialmediaapp.application
 
 import android.app.Application
+import com.rafih.socialmediaapp.repository.PostRepository
 import com.rafih.socialmediaapp.repository.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -19,6 +20,10 @@ class MyApplication:Application() {
         @Provides
         @Singleton
         fun provideUserReposistory() = UserRepository()
+
+        @Provides
+        @Singleton
+        fun providePostRepository() = PostRepository()
     }
 
 }

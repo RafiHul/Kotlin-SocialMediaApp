@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentBerandaBinding
+import com.rafih.socialmediaapp.viewmodel.PostViewModel
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 
 class BerandaFragment : Fragment(R.layout.fragment_beranda) {
@@ -18,6 +19,7 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
     private val binding get() = _binding!!
 
     private val userViewModel: UserViewModel by activityViewModels()
+    private val postViewModel: PostViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +37,7 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
             adapter = userPostAdapter
         }
         activity?.let {
-            userViewModel.userPost.observe(viewLifecycleOwner){
+            postViewModel.Post.observe(viewLifecycleOwner){
                 userPostAdapter.differ.submitList(it)
             }
         }

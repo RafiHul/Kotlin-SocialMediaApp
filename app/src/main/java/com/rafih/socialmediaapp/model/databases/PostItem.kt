@@ -1,6 +1,6 @@
 package com.rafih.socialmediaapp.model.databases
 
-data class UserPostItem(
+data class PostItem(
     val UserId: Int,
     val datetime: String,
     val id: String,

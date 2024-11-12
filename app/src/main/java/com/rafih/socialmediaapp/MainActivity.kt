@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 import com.rafih.socialmediaapp.adapter.FragmentPagerAdapter
 import com.rafih.socialmediaapp.databinding.ActivityMainBinding
+import com.rafih.socialmediaapp.viewmodel.PostViewModel
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     val userViewModel: UserViewModel by viewModels()
+    val postViewModel: PostViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarMain)
 
         lifecycleScope.launch {
-            userViewModel.getUserPost()
+            postViewModel.getPost()
         }
 
         setUpPager()

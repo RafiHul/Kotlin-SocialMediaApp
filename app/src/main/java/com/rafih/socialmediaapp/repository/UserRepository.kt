@@ -6,7 +6,7 @@ import com.rafih.socialmediaapp.Utils.getLoginToken
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.retrofit.RetrofitInstance
 import com.rafih.socialmediaapp.Utils.saveLoginToken
-import com.rafih.socialmediaapp.model.databases.UserPost
+import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgData
 import com.rafih.socialmediaapp.model.response.MsgWithToken
@@ -51,10 +51,6 @@ class UserRepository {
 
     suspend fun getProfilePic(jwtToken: String): Response<MsgData> {
         return userServices.getProfilePic(jwtToken)
-    }
-
-    suspend fun getUserPost(): Response<UserPost> {
-        return userServices.getUserPost()
     }
 
     fun getLoginData(context: Context) = getLoginToken(context)
