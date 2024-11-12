@@ -46,12 +46,13 @@ class UserPostAdapter(val context: Context): RecyclerView.Adapter<UserPostAdapte
             if (currImage == null){
                 binding.imageViewUserPost.visibility = View.GONE
             } else {
+                binding.imageViewUserPost.visibility = View.VISIBLE
                 Glide.with(context)
                     .load(StringToImageBitmap(currImage))
                     .error(R.drawable.baseline_error_24)
                     .placeholder(R.drawable.baseline_downloading_24)
                     .centerInside()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE) //memberikan cache
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.imageViewUserPost)
             }
         }

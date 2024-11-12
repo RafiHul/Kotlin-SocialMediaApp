@@ -1,5 +1,6 @@
 package com.rafih.socialmediaapp.fragment
 
+import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +21,7 @@ import com.rafih.socialmediaapp.viewmodel.PostViewModel
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 import kotlin.getValue
+import androidx.activity.addCallback
 
 class NewUserPostFragment : Fragment(R.layout.fragment_new_user_post) {
 
@@ -82,6 +84,13 @@ class NewUserPostFragment : Fragment(R.layout.fragment_new_user_post) {
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .centerInside()
             .into(binding.imageViewImageOverviewNewPost)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        requireActivity().onBackPressedDispatcher.addCallback(this){
+            navController.navigate(R.id.action_newUserPostFragment_to_berandaFragment)
+        }
     }
 
     override fun onDestroyView() {
