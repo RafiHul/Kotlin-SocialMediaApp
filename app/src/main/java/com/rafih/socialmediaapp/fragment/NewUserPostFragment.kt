@@ -22,6 +22,7 @@ import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 import kotlin.getValue
 import androidx.activity.addCallback
+import androidx.navigation.fragment.findNavController
 
 class NewUserPostFragment : Fragment(R.layout.fragment_new_user_post) {
 
@@ -45,8 +46,7 @@ class NewUserPostFragment : Fragment(R.layout.fragment_new_user_post) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-
+        navController = findNavController()
         binding.apply {
             buttonPickImageNewPost.setOnClickListener{
                 pickImageLaucher.launch("image/*")
@@ -81,7 +81,7 @@ class NewUserPostFragment : Fragment(R.layout.fragment_new_user_post) {
             .load(uri)
             .error(R.drawable.baseline_error_24)
             .placeholder(R.drawable.baseline_account_circle_24)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .diskCacheStrategy(DiskCacheStrategy.NONE) //pelajari ini
             .centerInside()
             .into(binding.imageViewImageOverviewNewPost)
     }
