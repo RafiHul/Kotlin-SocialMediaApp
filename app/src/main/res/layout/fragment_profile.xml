@@ -55,10 +55,10 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/buttonLogout"
+                android:id="@+id/buttonLogoutOrLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Logout" />
+                android:text="Login" />
 
             <Button
                 android:id="@+id/buttonSettingsProfile"
@@ -66,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:text="Settings"
                 app:layout_constraintEnd_toEndOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

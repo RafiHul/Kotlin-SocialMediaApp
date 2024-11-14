@@ -51,7 +51,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         if (userJWT.isEmpty() || userJWT == "null") {
             Toast.makeText(context, "harap login terlebih dahulu", Toast.LENGTH_SHORT).show()
-            toLoginActivity()
+            buttonLoginOrLogout("login")
         } else {
             lifecycleScope.launch {
                 //set userData livedata
@@ -60,7 +60,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show() //disini ada error
                         Log.d("eror get", it.toString())
                         userViewModel.clearLoginJWT(requireContext())
-                        toLoginActivity()
+                        buttonLoginOrLogout("login")
+                    } else {
+                        buttonLoginOrLogout("logout")
                     }
                 }
             }
@@ -101,13 +103,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             navController.navigate(R.id.action_profileFragment_to_settingsProfileFragment)
         }
 
-        binding.buttonLogout.setOnClickListener {
-            userViewModel.clearLoginJWT(requireContext())
-            binding.imageViewProfilePic.setImageResource(R.drawable.baseline_account_circle_24)
-            parentFragmentManager.beginTransaction().remove(ProfileFragment()).commitNow()
-            (activity as MainActivity).backToBeranda()
-        }
-
         binding.imageViewProfilePic.setOnClickListener{
             pickImageLauncher.launch("image/*")
         }
@@ -124,6 +119,26 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 Toast.makeText(context, "Ukuran File Tidak Boleh lebih dari 2MB", Toast.LENGTH_SHORT).show()
             } else {
                 findNavController().navigate(direction)
+            }
+        }
+    }
+
+    private fun buttonLoginOrLogout(action: String){
+        when(action){
+            "login" -> {
+                binding.buttonLogoutOrLogin.text = "Login"
+                binding.buttonLogoutOrLogin.setOnClickListener{
+                    toLoginActivity()
+                }
+            }
+            "logout" -> {
+                binding.buttonLogoutOrLogin.text = "Logout"
+                binding.buttonLogoutOrLogin.setOnClickListener{
+                    userViewModel.clearLoginJWT(requireContext())
+                    binding.imageViewProfilePic.setImageResource(R.drawable.baseline_account_circle_24)
+                    val intent = Intent(context, MainActivity::class.java)
+                    startActivity(intent) //ini bisa di optimisasi lagi
+                }
             }
         }
     }
