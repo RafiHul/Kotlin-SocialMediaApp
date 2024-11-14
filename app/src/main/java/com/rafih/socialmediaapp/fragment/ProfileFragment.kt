@@ -1,5 +1,6 @@
 package com.rafih.socialmediaapp.fragment
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.rafih.socialmediaapp.LogRegActivity
+import com.rafih.socialmediaapp.MainActivity
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.databinding.FragmentProfileBinding
@@ -48,7 +51,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         if (userJWT.isEmpty() || userJWT == "null") {
             Toast.makeText(context, "harap login terlebih dahulu", Toast.LENGTH_SHORT).show()
-            navController.navigate(R.id.action_profileFragment_to_loginFragment)
+            toLoginActivity()
         } else {
             lifecycleScope.launch {
                 //set userData livedata
@@ -57,7 +60,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                         Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show() //disini ada error
                         Log.d("eror get", it.toString())
                         userViewModel.clearLoginJWT(requireContext())
-                        navController.navigate(R.id.action_profileFragment_to_loginFragment)
+                        toLoginActivity()
                     }
                 }
             }
@@ -101,7 +104,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         binding.buttonLogout.setOnClickListener {
             userViewModel.clearLoginJWT(requireContext())
             binding.imageViewProfilePic.setImageResource(R.drawable.baseline_account_circle_24)
-            navController.navigate(R.id.action_profileFragment_to_loginFragment)
+            parentFragmentManager.beginTransaction().remove(ProfileFragment()).commitNow()
+            (activity as MainActivity).backToBeranda()
         }
 
         binding.imageViewProfilePic.setOnClickListener{
@@ -122,6 +126,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 findNavController().navigate(direction)
             }
         }
+    }
+
+    private fun toLoginActivity(){
+        val intent = Intent(context, LogRegActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

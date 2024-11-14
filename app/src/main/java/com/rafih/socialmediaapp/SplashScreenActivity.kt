@@ -26,7 +26,7 @@ class SplashScreenActivity : AppCompatActivity() {
         lifecycleScope.launch{
             userViewModel.getUserLoginJWT(this@SplashScreenActivity).collect {
                 val inent = Intent(this@SplashScreenActivity, MainActivity::class.java)
-                inent.putExtra("jwttoken",it)
+                inent.putExtra("jwt",it)
                 startActivity(inent)
                 finish()
             }

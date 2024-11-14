@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var myPager: ViewPager2
 
     val userViewModel: UserViewModel by viewModels()
     val postViewModel: PostViewModel by viewModels()
@@ -38,8 +40,8 @@ class MainActivity : AppCompatActivity() {
 
         setUpPager()
 
-        //get jwt token from splashscreen
-        val jwttoken = intent.getStringExtra("jwttoken").toString()
+        //get jwt token from splashscreen and login activity
+        val jwttoken = intent.getStringExtra("jwt").toString()
         userViewModel.setJWToken(jwttoken)
     }
 
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpPager() {
-        val myPager = binding.viewPagerMain
+        myPager = binding.viewPagerMain
         val myAdapter = FragmentPagerAdapter(supportFragmentManager,lifecycle)
         val myTabLayout = binding.tabLayoutMain
 
@@ -62,5 +64,9 @@ class MainActivity : AppCompatActivity() {
                 1 -> tab.text = "Profile"
             }
         }.attach()
+    }
+
+    fun backToBeranda(){
+        myPager.setCurrentItem(0)
     }
 }

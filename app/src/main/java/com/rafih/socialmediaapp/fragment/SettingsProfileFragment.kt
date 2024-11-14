@@ -2,6 +2,7 @@ package com.rafih.socialmediaapp.fragment
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.input.input
+import com.rafih.socialmediaapp.LogRegActivity
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.databinding.FragmentSettingsProfileBinding
 import com.rafih.socialmediaapp.model.databases.User
@@ -49,7 +51,7 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
         } catch (e:NullPointerException){
             Toast.makeText(context, "Terjadi Eror Harap Login Ulang", Toast.LENGTH_SHORT).show()
             userViewModel.clearLoginJWT(requireContext())
-            navController.navigate(R.id.action_settingsProfileFragment_to_loginFragment)
+            toLoginActivity()
         }
 
 
@@ -86,6 +88,11 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
         requireActivity().onBackPressedDispatcher.addCallback(this){
             navController.navigate(R.id.action_settingsProfileFragment_to_profileFragment)
         }
+    }
+
+    private fun toLoginActivity(){
+        val intent = Intent(context, LogRegActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {
