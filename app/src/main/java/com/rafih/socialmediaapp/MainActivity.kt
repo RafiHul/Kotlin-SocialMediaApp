@@ -57,6 +57,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+//        "INI MASIH ADA ERROR DAN BUG PAS LOGIN"
     }
 
     override fun onDestroy() {

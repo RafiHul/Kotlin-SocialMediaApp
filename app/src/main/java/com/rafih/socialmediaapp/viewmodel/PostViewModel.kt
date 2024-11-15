@@ -8,10 +8,10 @@ import androidx.lifecycle.ViewModel
 import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
 import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
+import com.rafih.socialmediaapp.model.response.MsgDataPost
 import com.rafih.socialmediaapp.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
@@ -48,6 +48,17 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
             }
         } catch (e: Exception){
             Log.e("erorororoororor",e.message.toString())
+        }
+    }
+
+    suspend fun getPostById(postId: String,action: (MsgDataPost) -> Unit){
+        try {
+            val response = repo.getPostById(postId)
+            if (response.isSuccessful){
+                action(response.body()!!)
+            }
+        } catch (e: Exception){
+            Log.e("eror di postviewmodel",e.message.toString())
         }
     }
 }

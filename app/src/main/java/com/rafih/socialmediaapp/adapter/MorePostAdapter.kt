@@ -1,14 +1,19 @@
 package com.rafih.socialmediaapp.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rafih.socialmediaapp.databinding.RecyclerviewMorePostBinding
 
-class MorePostAdapter(val postId: Int, val userId: Int, val optionList: Array<String>): RecyclerView.Adapter<MorePostAdapter.MyViewHolder>() {
+class MorePostAdapter(val isUserOwner: Boolean, val optionList: Array<String>): RecyclerView.Adapter<MorePostAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(val binding: RecyclerviewMorePostBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(currentOption: String){
+            if (!isUserOwner && currentOption in listOf("Delete")){
+                binding.root.visibility = View.GONE
+            }
+
             binding.textViewMoreOption.text = currentOption
         }
     }
