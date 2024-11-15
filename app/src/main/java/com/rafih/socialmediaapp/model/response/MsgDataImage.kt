@@ -1,6 +1,6 @@
 package com.rafih.socialmediaapp.model.response
 
-data class MsgData (
+data class MsgDataImage (
     val status: String,
     val message: String,
     val data: DataImage?

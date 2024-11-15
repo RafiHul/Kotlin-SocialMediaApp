@@ -6,9 +6,8 @@ import com.rafih.socialmediaapp.Utils.getLoginToken
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.retrofit.RetrofitInstance
 import com.rafih.socialmediaapp.Utils.saveLoginToken
-import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
-import com.rafih.socialmediaapp.model.response.MsgData
+import com.rafih.socialmediaapp.model.response.MsgDataImage
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -49,7 +48,7 @@ class UserRepository {
         return userServices.changeProfilePic(jwtToken, image)
     }
 
-    suspend fun getProfilePic(jwtToken: String): Response<MsgData> {
+    suspend fun getProfilePic(jwtToken: String): Response<MsgDataImage> {
         return userServices.getProfilePic(jwtToken)
     }
 

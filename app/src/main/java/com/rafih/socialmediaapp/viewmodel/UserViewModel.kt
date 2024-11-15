@@ -14,16 +14,12 @@ import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
 import com.rafih.socialmediaapp.Utils.toBitMap
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.model.response.Msg
-import com.rafih.socialmediaapp.model.response.MsgData
+import com.rafih.socialmediaapp.model.response.MsgDataImage
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import com.rafih.socialmediaapp.model.databases.User
-import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -149,7 +145,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         }
     }
 
-    suspend fun getProfilePic(action: (MsgData?) -> Unit){
+    suspend fun getProfilePic(action: (MsgDataImage?) -> Unit){
         try {
             _userProfilePic.value = null //reset pic
             val jwt = getJwtBearer()
