@@ -32,7 +32,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private val userViewModel: UserViewModel by activityViewModels()
 
     private lateinit var navController: NavController
-    private lateinit var userJWT: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,25 +46,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         navController = findNavController()
 
         //get jwt token
-        userJWT = userViewModel.userJWToken.value.toString()
+        val userData = userViewModel.userData.value
 
-        if (userJWT.isEmpty() || userJWT == "null") {
+        if (userData == null) {
             Toast.makeText(context, "harap login terlebih dahulu", Toast.LENGTH_SHORT).show()
             buttonLoginOrLogout("login")
         } else {
-            lifecycleScope.launch {
-                //set userData livedata
-                userViewModel.setUserData {
-                    if (it.status == "failed") {
-                        Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show() //disini ada error
-                        Log.d("eror get", it.toString())
-                        userViewModel.clearLoginJWT(requireContext())
-                        buttonLoginOrLogout("login")
-                    } else {
-                        buttonLoginOrLogout("logout")
-                    }
-                }
-            }
+            Toast.makeText(context, "Selamat Datang ${userData.username}", Toast.LENGTH_SHORT).show()
+            buttonLoginOrLogout("logout")
         }
 
         // ProgressBar Loading
@@ -88,8 +76,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         userViewModel.userData.observe(viewLifecycleOwner){
-            binding.textViewUsername.text = it.username
+            binding.textViewUsername.text = it?.username ?: "Login"
         }
+
         userViewModel.userProfilePic.observe(viewLifecycleOwner){
             Glide.with(this)
                 .load(it)

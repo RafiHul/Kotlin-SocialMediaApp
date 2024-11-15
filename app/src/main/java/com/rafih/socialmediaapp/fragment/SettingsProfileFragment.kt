@@ -57,9 +57,9 @@ class SettingsProfileFragment : Fragment(R.layout.fragment_settings_profile) {
 
         userViewModel.userData.observe(viewLifecycleOwner){
             binding.apply {
-                textViewFirstName.text = it.first_name
-                textViewLastName.text = it.last_name
-                textViewEmail.text = it.email
+                textViewFirstName.text = it?.first_name
+                textViewLastName.text = it?.last_name
+                textViewEmail.text = it?.email
             }
         }
 

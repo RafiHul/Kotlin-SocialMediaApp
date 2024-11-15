@@ -1,6 +1,8 @@
 package com.rafih.socialmediaapp
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -43,6 +45,18 @@ class MainActivity : AppCompatActivity() {
         //get jwt token from splashscreen and login activity
         val jwttoken = intent.getStringExtra("jwt").toString()
         userViewModel.setJWToken(jwttoken)
+
+        if (jwttoken.isNotEmpty() || jwttoken != "null"){
+            lifecycleScope.launch {
+                userViewModel.setUserData {
+                    if (it.status == "failed") {
+                        Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show() //disini ada error atau sesi habis
+                        Log.d("eror get", it.toString())
+                        userViewModel.clearLoginJWT(applicationContext) //ini ada bug kalo gagal dia memulai ulang activity nya
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
