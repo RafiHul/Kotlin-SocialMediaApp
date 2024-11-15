@@ -15,7 +15,7 @@ import com.rafih.socialmediaapp.Utils.decodeToByteArray
 import com.rafih.socialmediaapp.databinding.RecyclerviewPostBinding
 import com.rafih.socialmediaapp.model.databases.PostItem
 
-class UserPostAdapter(val context: Context): RecyclerView.Adapter<UserPostAdapter.MyViewHolder>() {
+class UserPostAdapter(val context: Context,val actionMore: (PostItem) -> Unit): RecyclerView.Adapter<UserPostAdapter.MyViewHolder>() {
 
 //    init {
 //        // Basic Pre-fetch
@@ -32,6 +32,10 @@ class UserPostAdapter(val context: Context): RecyclerView.Adapter<UserPostAdapte
 
             binding.textViewTitlePostBeranda.text = currentPost.title
             binding.textViewUsernameBeranda.text = currentPost.usernamePost
+
+            binding.imageButtonMorePost.setOnClickListener{
+                actionMore(currentPost)
+            }
 
             Glide.with(context)
                 .load(currentPost.userProfilePicturePost?.decodeToByteArray())

@@ -1,7 +1,6 @@
 package com.rafih.socialmediaapp.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,10 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentBerandaBinding
+import com.rafih.socialmediaapp.fragment.dialog.MoreDialogFragment
 import com.rafih.socialmediaapp.viewmodel.PostViewModel
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
@@ -37,7 +36,11 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val userPostAdapter = UserPostAdapter(requireContext())
+
+        val userPostAdapter = UserPostAdapter(requireContext()){
+            MoreDialogFragment.newInstance(it.id.toInt(),userViewModel.userData.value?.id!!).show(parentFragmentManager,"tes")
+        }
+
         binding.recyclerViewUserPost.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
             adapter = userPostAdapter
@@ -62,7 +65,6 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
                 postViewModel.getPost()
                 refresh.isRefreshing = false
             }
-            Log.d("reff","ripres")
         }
     }
 

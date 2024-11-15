@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_berandaFragment_to_newUserPostFragment"
             app:destination="@id/newUserPostFragment" />
+        <action
+            android:id="@+id/action_berandaFragment_to_moreDialogFragment"
+            app:destination="@id/moreDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/newUserPostFragment"
@@ -23,4 +26,13 @@
             android:id="@+id/action_newUserPostFragment_to_berandaFragment"
             app:destination="@id/berandaFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/moreDialogFragment"
+        android:name="com.rafih.socialmediaapp.fragment.dialog.MoreDialogFragment"
+        android:label="fragment_more_dialog"
+        tools:layout="@layout/fragment_more_dialog" >
+        <action
+            android:id="@+id/action_moreDialogFragment_to_berandaFragment"
+            app:destination="@id/berandaFragment" />
+    </dialog>
 </navigation>

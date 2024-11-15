@@ -32,7 +32,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
     private val _loadingApi: MutableLiveData<Boolean> = MutableLiveData()
     val loadingApi = _loadingApi
 
-    private val _userData: MutableLiveData<User> = MutableLiveData()
+    private val _userData: MutableLiveData<User?> = MutableLiveData()
     val userData = _userData
 
     private val _userProfilePic: MutableLiveData<Bitmap?> = MutableLiveData()
@@ -60,6 +60,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
                 }
             } else {
                 action(Msg("failed",get.message()))
+                _userData.value = null
             }
         }
     }

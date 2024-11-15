@@ -9,4 +9,9 @@
     <string name="batal">Batal</string>
     <string name="default_crop_label_text">Sample crop label</string>
     <string name="reset">Reset Crop Rect</string>
+
+    <string-array name="more_post_action">
+        <item>Save</item>
+        <item>Delete</item>
+    </string-array>
 </resources>
