@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.adapter.MorePostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentMoreDialogBinding
 import com.rafih.socialmediaapp.viewmodel.PostViewModel
+import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,10 +25,12 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
     private val binding get() = _binding!!
 
     private val postViewModel: PostViewModel by activityViewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     private var postId: Int? = null
     private var userId: Int? = null
     private var isUserOwner: Boolean = false
+    private var userJwt: String? = null
     private lateinit var optionList: Array<String>
 
     override fun onCreateView(
@@ -43,6 +48,7 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
         postId = args?.getInt("postId")
         userId = args?.getInt("userId")
         optionList = resources.getStringArray(R.array.more_post_action)
+        userJwt = userViewModel.getJwtBearer()
 
         lifecycleScope.launch {
             binding.recyclerViewMoreOption.visibility = View.GONE
@@ -53,16 +59,23 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
                     }
                 }
             }
-            val morePostAdapter = MorePostAdapter(isUserOwner,optionList)
+
+            val morePostAdapter = MorePostAdapter(isUserOwner,optionList) {
+                lifecycleScope.launch {
+                    postViewModel.deletePost(userJwt!!, postId.toString()) {
+                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                    }
+                    postViewModel.getPost()
+                    dismiss()
+                }
+            }
+
             binding.recyclerViewMoreOption.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
                 adapter = morePostAdapter
             }
             binding.recyclerViewMoreOption.visibility = View.VISIBLE
         }
-
-
-        //bisa di if in disini list nya
     }
 
     override fun onStart() {

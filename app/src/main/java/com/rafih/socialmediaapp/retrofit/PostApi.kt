@@ -27,8 +27,16 @@ interface PostApi {
     ): Response<Msg>
 
     @FormUrlEncoded
-    @POST("/getpostbyid")
+    @POST("/getpostdetailbyid")
     suspend fun getPostById(
         @Field("post_id") postId: String
     ): Response<MsgDataPost>
+
+
+    @FormUrlEncoded
+    @POST("/deletepost")
+    suspend fun deletePost(
+        @Header("Authorization") jwtToken: String,
+        @Field("post_id") postId: String
+    ): Response<Msg>
 }

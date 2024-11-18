@@ -1,6 +1,7 @@
 package com.rafih.socialmediaapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentBerandaBinding
 import com.rafih.socialmediaapp.fragment.dialog.MoreDialogFragment
+import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.viewmodel.PostViewModel
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
@@ -25,6 +27,7 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
 
     private val userViewModel: UserViewModel by activityViewModels()
     private val postViewModel: PostViewModel by activityViewModels()
+    private var userData: User? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +39,11 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        userViewModel.userData.observe(viewLifecycleOwner){
+            //ini harusnya ada loading
+            userData = it
+        }
 
         val userPostAdapter = UserPostAdapter(requireContext()){
             MoreDialogFragment.newInstance(it.id.toInt(),userViewModel.userData.value?.id!!).show(parentFragmentManager,"tes")

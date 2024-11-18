@@ -61,4 +61,15 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
             Log.e("eror di postviewmodel",e.message.toString())
         }
     }
+
+    suspend fun deletePost(jwtToken: String,postId: String, action: (String) -> Unit){
+        try {
+            val response = repo.deletePost(jwtToken,postId)
+            if (response.isSuccessful){
+                action(response.body()?.message.toString())
+            }
+        } catch (e: Exception){
+            action(e.message.toString())
+        }
+    }
 }

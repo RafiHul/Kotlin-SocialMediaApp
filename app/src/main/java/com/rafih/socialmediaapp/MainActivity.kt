@@ -2,6 +2,7 @@ package com.rafih.socialmediaapp
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         if (jwttoken.isNotEmpty() || jwttoken != "null"){
             lifecycleScope.launch {
+                binding.root.visibility = View.INVISIBLE
                 userViewModel.setUserData {
                     if (it.status == "failed") {
                         Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show() //disini ada error atau sesi habis
@@ -55,6 +57,7 @@ class MainActivity : AppCompatActivity() {
                         userViewModel.clearLoginJWT(applicationContext) //ini ada bug kalo gagal dia memulai ulang activity nya
                     }
                 }
+                binding.root.visibility = View.VISIBLE
             }
         }
 

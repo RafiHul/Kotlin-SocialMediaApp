@@ -6,12 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.rafih.socialmediaapp.databinding.RecyclerviewMorePostBinding
 
-class MorePostAdapter(val isUserOwner: Boolean, val optionList: Array<String>): RecyclerView.Adapter<MorePostAdapter.MyViewHolder>() {
+class MorePostAdapter(val isUserOwner: Boolean, val optionList: Array<String>,val deletePostAction: () -> Unit): RecyclerView.Adapter<MorePostAdapter.MyViewHolder>() {
 
     inner class MyViewHolder(val binding: RecyclerviewMorePostBinding): RecyclerView.ViewHolder(binding.root){
         fun bind(currentOption: String){
-            if (!isUserOwner && currentOption in listOf("Delete")){
+            if (!isUserOwner && currentOption == "Delete"){ //user not owner post
                 binding.root.visibility = View.GONE
+                return
+            }
+
+            if (currentOption == "Delete"){
+                binding.root.setOnClickListener{
+                    deletePostAction()
+                }
             }
 
             binding.textViewMoreOption.text = currentOption

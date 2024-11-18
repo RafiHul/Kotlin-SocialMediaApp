@@ -45,7 +45,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
-        //get jwt token
+        //get user data
         val userData = userViewModel.userData.value
 
         if (userData == null) {

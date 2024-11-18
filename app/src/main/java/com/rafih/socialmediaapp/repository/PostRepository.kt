@@ -22,4 +22,8 @@ class PostRepository {
     suspend fun getPostById(postId: String): Response<MsgDataPost> {
         return postService.getPostById(postId)
     }
+
+    suspend fun deletePost(jwtToken: String, postId: String): Response<Msg> {
+        return postService.deletePost(jwtToken,postId)
+    }
 }
