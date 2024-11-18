@@ -34,7 +34,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
     private val _userProfilePic: MutableLiveData<Bitmap?> = MutableLiveData()
     val userProfilePic = _userProfilePic
 
-    private val _userJWToken: MutableLiveData<String> = MutableLiveData()
+    private val _userJWToken: MutableLiveData<String?> = MutableLiveData()
     val userJWToken = _userJWToken
 
     suspend fun <T> withLoading(block: suspend () -> T):T{
@@ -167,7 +167,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         _loadingApi.value = false
     }
 
-    fun setJWToken(token: String){
+    fun setJWToken(token: String?){
         _userJWToken.value = token
     }
 

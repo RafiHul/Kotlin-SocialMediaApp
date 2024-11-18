@@ -44,10 +44,10 @@ class MainActivity : AppCompatActivity() {
         setUpPager()
 
         //get jwt token from splashscreen and login activity
-        val jwttoken = intent.getStringExtra("jwt").toString()
+        val jwttoken = intent.getStringExtra("jwt")
         userViewModel.setJWToken(jwttoken)
 
-        if (jwttoken.isNotEmpty() || jwttoken != "null"){
+        if (jwttoken?.isNotBlank() == true){
             lifecycleScope.launch {
                 binding.root.visibility = View.INVISIBLE
                 userViewModel.setUserData {

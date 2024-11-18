@@ -76,7 +76,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
 
         userViewModel.userData.observe(viewLifecycleOwner){
-            binding.textViewUsername.text = it?.username ?: "Login"
+            binding.textViewUsername.text = it?.username
         }
 
         userViewModel.userProfilePic.observe(viewLifecycleOwner){
