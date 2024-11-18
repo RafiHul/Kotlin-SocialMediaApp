@@ -5,12 +5,14 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
 import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgDataPost
 import com.rafih.socialmediaapp.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
@@ -72,4 +74,12 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
             action(e.message.toString())
         }
     }
+
+    fun deletePostAdapter(jwtToken: String,postId: String,action: (String) -> Unit){
+        viewModelScope.launch{
+            deletePost(jwtToken,postId,action)
+            getPost()
+        }
+    }
+
 }

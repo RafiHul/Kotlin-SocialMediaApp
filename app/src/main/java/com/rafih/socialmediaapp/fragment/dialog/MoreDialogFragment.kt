@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.adapter.MorePostAdapter
@@ -51,7 +50,6 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
         userJwt = userViewModel.getJwtBearer()
 
         lifecycleScope.launch {
-            binding.recyclerViewMoreOption.visibility = View.GONE
             withContext(Dispatchers.IO){//berpindah thread ke IO
                 postViewModel.getPostById(postId.toString()){
                     if (userId.toString() == it.data.UserId.toString()){
@@ -61,11 +59,8 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
             }
 
             val morePostAdapter = MorePostAdapter(isUserOwner,optionList) {
-                lifecycleScope.launch {
-                    postViewModel.deletePost(userJwt!!, postId.toString()) {
-                        Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-                    }
-                    postViewModel.getPost()
+                postViewModel.deletePostAdapter(userJwt!!,postId.toString()){
+                    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
                     dismiss()
                 }
             }
@@ -75,6 +70,7 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
                 adapter = morePostAdapter
             }
             binding.recyclerViewMoreOption.visibility = View.VISIBLE
+            binding.progressBar4.visibility = View.GONE
         }
     }
 
