@@ -1,6 +1,7 @@
 package com.rafih.socialmediaapp.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.Utils.StringToImageBitmap
-import com.rafih.socialmediaapp.Utils.decodeToByteArray
 import com.rafih.socialmediaapp.databinding.RecyclerviewPostBinding
 import com.rafih.socialmediaapp.model.databases.PostItem
 
@@ -38,7 +38,7 @@ class UserPostAdapter(val context: Context,val actionMore: (PostItem) -> Unit): 
             }
 
             Glide.with(context)
-                .load(currentPost.userProfilePicturePost?.decodeToByteArray())
+                .load(StringToImageBitmap(currentPost.userProfilePicturePost.toString()))
                 .error(R.drawable.baseline_error_24)
                 .placeholder(R.drawable.baseline_account_circle_24)
                 .diskCacheStrategy(DiskCacheStrategy.NONE) //tidak memberikan cache

@@ -14,17 +14,13 @@ fun Uri.toByteArray(contentResolver: ContentResolver): ByteArray {
     return inputStream?.readBytes() ?: ByteArray(0)
 }
 
-fun String.decodeToByteArray(): ByteArray {
-    return Base64.decode(this, Base64.DEFAULT)
-}
-
 fun ByteArray.toBitMap(): Bitmap? {
     return BitmapFactory.decodeByteArray(this,0,this.size)
 }
 
 fun StringToImageBitmap(str: String): Bitmap? {
-    val byteArrayImage = str.decodeToByteArray() //decode base64 to bytearray
-    return byteArrayImage.toBitMap() //convert to bitmap
+    val decodeBytes = Base64.decode(str, Base64.DEFAULT)
+    return decodeBytes.toBitMap() //convert to bitmap
 }
 
 fun Uri.convertUriToMultiPart(contentResolver: ContentResolver): MultipartBody.Part {
@@ -34,4 +30,8 @@ fun Uri.convertUriToMultiPart(contentResolver: ContentResolver): MultipartBody.P
     val multipartBody = MultipartBody.Part.createFormData("image", "image123.jpg", requestBody) // agar bisa di kirim ke request
 
     return multipartBody
+}
+
+fun getAndroidVersion(): Int {
+    return android.os.Build.VERSION.SDK_INT
 }

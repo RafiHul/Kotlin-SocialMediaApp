@@ -78,7 +78,7 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
     fun deletePostAdapter(jwtToken: String,postId: String,action: (String) -> Unit){
         viewModelScope.launch{
             deletePost(jwtToken,postId,action)
-            getPost()
+            getPost() //refresh beranda
         }
     }
 
