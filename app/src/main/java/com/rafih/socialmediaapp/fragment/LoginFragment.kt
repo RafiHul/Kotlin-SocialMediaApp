@@ -72,6 +72,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
             if (it.access_token.isNotEmpty()) {
                 val intent = Intent(context, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 intent.putExtra("jwt",it.access_token)
                 startActivity(intent)
             }
