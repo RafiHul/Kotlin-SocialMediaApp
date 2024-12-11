@@ -126,6 +126,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     userViewModel.clearLoginJWT(requireContext())
                     binding.imageViewProfilePic.setImageResource(R.drawable.baseline_account_circle_24)
                     val intent = Intent(context, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent) //ini bisa di optimisasi lagi
                 }
             }

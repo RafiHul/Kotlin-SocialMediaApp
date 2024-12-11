@@ -61,9 +61,9 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         }
     }
 
-//    fun clearUserData(){
-//        _userData.value = null
-//    }
+    fun clearUserData(){
+        _userData.value = null
+    }
 
     suspend fun postRegisterUser(user: User,action: (Msg) -> Unit){
         withLoading {
@@ -172,6 +172,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
     }
 
     fun clearLoginJWT(context: Context){
+        clearUserData()
         viewModelScope.launch {
             repository.clearLoginData(context)
             setJWToken("")
