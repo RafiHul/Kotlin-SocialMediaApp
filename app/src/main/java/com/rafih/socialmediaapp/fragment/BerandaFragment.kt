@@ -15,6 +15,7 @@ import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentBerandaBinding
 import com.rafih.socialmediaapp.fragment.dialog.MoreDialogFragment
+import com.rafih.socialmediaapp.model.databases.PostItem
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.viewmodel.PostViewModel
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
@@ -45,8 +46,10 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
             userData = it
         }
 
-        val userPostAdapter = UserPostAdapter(requireContext()){
-            MoreDialogFragment.newInstance(it.id.toInt(),userViewModel.userData.value?.id!!).show(parentFragmentManager,"tes")
+        val userPostAdapter = UserPostAdapter(requireContext()){ postItem: PostItem ->
+            userViewModel.userData.value?.let {
+                MoreDialogFragment.newInstance(postItem.id.toInt()).show(parentFragmentManager, "tes")
+            } ?: Toast.makeText(context, "Harap Login Terlebih dahulu", Toast.LENGTH_SHORT).show()
         }
 
         binding.recyclerViewUserPost.apply {
