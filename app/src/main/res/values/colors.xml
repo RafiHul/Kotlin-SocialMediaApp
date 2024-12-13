@@ -9,4 +9,6 @@
     <color name="whiteDark">#F3F3F3</color>
     <color name="grey">#CDCDCD</color>
     <color name="black">#000000</color>
+    <color name="TextBlueColor">#19295C</color>
+    <color name="grey_blue">#99A1BE</color>
 </resources>

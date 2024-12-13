@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/more_horiz/baseline_more_horiz_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/photo_camera/baseline_photo_camera_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,7 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="baseline_more_horiz_24" />
+                            <entry key="color" value="63c48c" />
+                            <entry key="outputName" value="baseline_photo_camera_24" />
+                            <entry key="sourceFile" value="$USER_HOME$/Documents/svg/earth-8-svgrepo-com.svg" />
                           </map>
                         </option>
                       </PersistentState>
