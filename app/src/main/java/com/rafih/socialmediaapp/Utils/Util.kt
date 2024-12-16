@@ -8,6 +8,7 @@ import android.util.Base64
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.time.format.DateTimeFormatter
 
 fun Uri.toByteArray(contentResolver: ContentResolver): ByteArray {
     val inputStream = contentResolver.openInputStream(this)
@@ -18,7 +19,7 @@ fun ByteArray.toBitMap(): Bitmap? {
     return BitmapFactory.decodeByteArray(this,0,this.size)
 }
 
-fun StringToImageBitmap(str: String): Bitmap? {
+fun stringToImageBitmap(str: String): Bitmap? {
     val decodeBytes = Base64.decode(str, Base64.DEFAULT)
     return decodeBytes.toBitMap() //convert to bitmap
 }
@@ -35,3 +36,5 @@ fun Uri.convertUriToMultiPart(contentResolver: ContentResolver): MultipartBody.P
 fun getAndroidVersion(): Int {
     return android.os.Build.VERSION.SDK_INT
 }
+
+val formatterDateTime: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")

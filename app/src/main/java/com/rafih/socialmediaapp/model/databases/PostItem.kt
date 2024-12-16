@@ -8,5 +8,6 @@ data class PostItem(
     val title: String,
     val usernamePost: String,
     val userLike: Int,
-    val userProfilePicturePost : String?
+    val userProfilePicturePost : String?,
+    val imageMimeType: String?
 )

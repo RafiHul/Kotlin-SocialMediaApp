@@ -2,10 +2,14 @@ package com.rafih.socialmediaapp.fragment.dialog
 
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.ContentValues
 import android.content.Context
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +19,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafih.socialmediaapp.R
+import com.rafih.socialmediaapp.Utils.stringToImageBitmap
+import com.rafih.socialmediaapp.Utils.getAndroidVersion
 import com.rafih.socialmediaapp.adapter.MorePostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentMoreDialogBinding
 import com.rafih.socialmediaapp.model.databases.PostItem
@@ -35,7 +41,7 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
     private val postViewModel: PostViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private val writeExternalStoragePermission = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-    private val downloadDirectory = Environment.DIRECTORY_DOWNLOADS
+    private val downloadDirectory = Environment.DIRECTORY_PICTURES
 
     private var userId: Int? = null
     private var isUserOwner: Boolean = false
@@ -80,8 +86,43 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
                     if (postItem.image == null){
                         // save title to clipboard
                         val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        val clip = ClipData.newPlainText("Text Berhasil Di salin",postItem.title)
+                        val clip = ClipData.newPlainText("Title Post",postItem.title)
                         clipboard.setPrimaryClip(clip)
+                    } else {
+                        // save image
+                        val fileNamesByDateTime = "${LocalDateTime.now()}.${postItem.imageMimeType?.split(" ")[0]?.substringAfter("/")?.lowercase()}" //get extension file name
+
+                        if (getAndroidVersion() <= Build.VERSION_CODES.P){ //android < 9
+                            if (requireActivity().checkSelfPermission(writeExternalStoragePermission) != PackageManager.PERMISSION_GRANTED){
+                                requireActivity().requestPermissions(arrayOf(writeExternalStoragePermission),100)
+                            }
+                            saveBitMapDownloadAndroidPie(stringToImageBitmap(postItem.image!!)!!, fileNamesByDateTime)
+                        } else {
+                            val resolver = requireContext().contentResolver
+                            val contentValues = ContentValues().apply {
+                                put(MediaStore.Images.Media.DISPLAY_NAME, fileNamesByDateTime)
+                                put(MediaStore.Images.Media.MIME_TYPE, postItem.imageMimeType?.split(" ")[0]?.lowercase())
+                                put(MediaStore.Images.Media.RELATIVE_PATH, downloadDirectory)
+                                put(MediaStore.Images.Media.IS_PENDING, 1)
+                            }
+
+                            val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+                            if (uri != null){
+                                resolver.openOutputStream(uri).use {outputstream ->
+                                    if (outputstream != null){
+                                        stringToImageBitmap(postItem.image!!)?.compress(Bitmap.CompressFormat.PNG,100,outputstream)
+                                    }
+                                }
+                                contentValues.clear()
+                                contentValues.put(MediaStore.Images.Media.IS_PENDING,0)
+                                resolver.update(uri,contentValues,null,null)
+
+                                Toast.makeText(context, "Gambar berhasil di download", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Gambar Gagal Di Download", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                     dismiss()
                 })
@@ -123,10 +164,6 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
         stream?.let {
             bitmap.compress(Bitmap.CompressFormat.PNG,100,it)
         }
-    }
-
-    private fun fileNamesByDateTime(mimeType: String): String {
-        return "${LocalDateTime.now()}.$mimeType"
     }
 
     override fun onDestroyView() {

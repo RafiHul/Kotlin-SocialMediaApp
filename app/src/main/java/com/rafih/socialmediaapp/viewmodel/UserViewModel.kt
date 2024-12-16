@@ -9,7 +9,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.rafih.socialmediaapp.Utils.StringToImageBitmap
+import com.rafih.socialmediaapp.Utils.stringToImageBitmap
 import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
 import com.rafih.socialmediaapp.Utils.toBitMap
 import com.rafih.socialmediaapp.Utils.toByteArray
@@ -152,7 +152,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
             val getPic = repository.getProfilePic(jwt)
             val body = getPic.body()
             if (getPic.isSuccessful && getPic.body()?.data != null) {
-                val bitMapImage = StringToImageBitmap(body?.data?.imageEncode!!)//ini harus di aturrrr biar null safe
+                val bitMapImage = stringToImageBitmap(body?.data?.imageEncode!!)//ini harus di aturrrr biar null safe
                 _userProfilePic.value = bitMapImage
                 action(body)
             } else {
