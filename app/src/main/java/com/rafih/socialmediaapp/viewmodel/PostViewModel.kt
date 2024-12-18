@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
+import com.rafih.socialmediaapp.model.databases.Comment
 import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgDataPost
@@ -79,6 +80,16 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
         viewModelScope.launch{
             deletePost(jwtToken,postId,action)
             getPost() //refresh beranda
+        }
+    }
+
+    fun getPostComments(postId: String,action: (Comment?) -> Unit){
+        viewModelScope.launch{
+            val response = repo.getPostComments(postId)
+            if (response.isSuccessful){
+                val body = response.body()
+                action(body)
+            }
         }
     }
 

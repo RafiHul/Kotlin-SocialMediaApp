@@ -1,5 +1,6 @@
 package com.rafih.socialmediaapp.repository
 
+import com.rafih.socialmediaapp.model.databases.Comment
 import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgDataPost
@@ -25,5 +26,9 @@ class PostRepository {
 
     suspend fun deletePost(jwtToken: String, postId: String): Response<Msg> {
         return postService.deletePost(jwtToken,postId)
+    }
+
+    suspend fun getPostComments(postId: String): Response<Comment> {
+        return postService.getPostComment(postId)
     }
 }
