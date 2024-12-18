@@ -1,5 +1,6 @@
 package com.rafih.socialmediaapp.retrofit
 
+import com.rafih.socialmediaapp.model.databases.Comment
 import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgDataPost
@@ -39,4 +40,10 @@ interface PostApi {
         @Header("Authorization") jwtToken: String,
         @Field("post_id") postId: String
     ): Response<Msg>
+
+    @FormUrlEncoded
+    @POST("/getpostcomment")
+    suspend fun getPostComment(
+        @Field("post_id") postId: String
+    ): Response<Comment>
 }
