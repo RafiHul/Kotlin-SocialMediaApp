@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,9 +105,10 @@ class MoreDialogFragment : DialogFragment(R.layout.fragment_more_dialog) {
                                 put(MediaStore.Images.Media.MIME_TYPE, postItem.imageMimeType?.split(" ")[0]?.lowercase())
                                 put(MediaStore.Images.Media.RELATIVE_PATH, downloadDirectory)
                                 put(MediaStore.Images.Media.IS_PENDING, 1)
-                            }
+                            } //membuat metadata
 
                             val uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                            Log.d("urrrr",uri.toString())
 
                             if (uri != null){
                                 resolver.openOutputStream(uri).use {outputstream ->
