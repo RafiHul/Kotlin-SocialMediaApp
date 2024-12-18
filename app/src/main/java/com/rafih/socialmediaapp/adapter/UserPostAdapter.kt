@@ -14,7 +14,7 @@ import com.rafih.socialmediaapp.Utils.stringToImageBitmap
 import com.rafih.socialmediaapp.databinding.RecyclerviewPostBinding
 import com.rafih.socialmediaapp.model.databases.PostItem
 
-class UserPostAdapter(val context: Context,val actionMore: (PostItem) -> Unit): RecyclerView.Adapter<UserPostAdapter.MyViewHolder>() {
+class UserPostAdapter(val context: Context,val actionMore: (PostItem) -> Unit, val actionComments: (String) -> Unit): RecyclerView.Adapter<UserPostAdapter.MyViewHolder>() {
 
 //    init {
 //        // Basic Pre-fetch
@@ -34,6 +34,10 @@ class UserPostAdapter(val context: Context,val actionMore: (PostItem) -> Unit): 
 
             binding.imageButtonMorePost.setOnClickListener{
                 actionMore(currentPost)
+            }
+
+            binding.imageButtonCommentsPost.setOnClickListener{
+                actionComments(currentPost.id)
             }
 
             Glide.with(context)
