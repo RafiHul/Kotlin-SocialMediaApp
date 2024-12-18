@@ -96,12 +96,77 @@
             android:layout_marginTop="12dp"
             android:adjustViewBounds="true"
             android:background="@color/white"
-            android:paddingBottom="20dp"
             android:scaleType="centerCrop"
             android:src="@drawable/screenshot_20240819_105132"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/imageButtonMorePost"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicBeranda"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitlePostBeranda" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto"
+            android:text="textView"
+            android:textColor="@color/grey_blue"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicBeranda"
+            app:layout_constraintTop_toBottomOf="@+id/imageViewUserPost" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:paddingBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/imageButtonLikePost"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#C3E4FF"
+                app:cornerRadius="50dp"
+                app:icon="@drawable/baseline_thumb_up_24"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#1877F2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/imageButtonCommentsPost"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#C3E4FF"
+                app:cornerRadius="50dp"
+                app:icon="@drawable/baseline_chat_24"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#1877F2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/imageButtonSharePost"
+                android:layout_width="40dp"
+                android:layout_height="45dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#C3E4FF"
+                app:cornerRadius="50dp"
+                app:icon="@drawable/baseline_send_24"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconTint="#1877F2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
