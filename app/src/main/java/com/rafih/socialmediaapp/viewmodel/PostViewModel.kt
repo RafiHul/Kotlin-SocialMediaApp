@@ -93,4 +93,13 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
         }
     }
 
+    fun getPostUser(userId: String, action: (Post?) -> Unit){
+        viewModelScope.launch{
+            val response = repo.getPostUser(userId)
+            if (response.isSuccessful){
+                action(response.body())
+            }
+        }
+    }
+
 }

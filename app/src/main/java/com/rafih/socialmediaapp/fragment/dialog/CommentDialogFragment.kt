@@ -49,8 +49,8 @@ class CommentDialogFragment : DialogFragment(R.layout.fragment_comment) {
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
-            500,
-            500
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
         )
     }
 

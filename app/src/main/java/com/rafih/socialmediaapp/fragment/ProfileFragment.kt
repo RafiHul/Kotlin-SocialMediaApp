@@ -3,7 +3,6 @@ package com.rafih.socialmediaapp.fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,27 +10,33 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.rafih.socialmediaapp.LogRegActivity
 import com.rafih.socialmediaapp.MainActivity
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.Utils.toByteArray
+import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentProfileBinding
+import com.rafih.socialmediaapp.fragment.dialog.CommentDialogFragment
+import com.rafih.socialmediaapp.fragment.dialog.MoreDialogFragment
+import com.rafih.socialmediaapp.model.databases.PostItem
 import com.rafih.socialmediaapp.model.databases.User
+import com.rafih.socialmediaapp.viewmodel.PostViewModel
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
-import kotlinx.coroutines.launch
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private var _binding : FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val userViewModel: UserViewModel by activityViewModels()
+    private val postViewModel: PostViewModel by activityViewModels()
 
     private lateinit var navController: NavController
+    private var userData: User? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,13 +51,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         navController = findNavController()
 
         //get user data
-        val userData = userViewModel.userData.value
+        userData = userViewModel.userData.value
 
         if (userData == null) {
             Toast.makeText(context, "harap login terlebih dahulu", Toast.LENGTH_SHORT).show()
             buttonLoginOrLogout("login")
         } else {
-            Toast.makeText(context, "Selamat Datang ${userData.username}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Selamat Datang ${userData!!.username}", Toast.LENGTH_SHORT).show()
             buttonLoginOrLogout("logout")
         }
 
@@ -115,12 +120,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun buttonLoginOrLogout(action: String){
         when(action){
             "login" -> {
+                binding.recyclerViewUserPostProfile.visibility = View.INVISIBLE
                 binding.buttonLogoutOrLogin.text = "Login"
                 binding.buttonLogoutOrLogin.setOnClickListener{
                     toLoginActivity()
                 }
             }
             "logout" -> {
+                binding.recyclerViewUserPostProfile.visibility = View.VISIBLE
                 binding.buttonLogoutOrLogin.text = "Logout"
                 binding.buttonLogoutOrLogin.setOnClickListener{
                     userViewModel.clearLoginJWT(requireContext())
@@ -128,6 +135,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     val intent = Intent(context, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent) //ini bisa di optimisasi lagi
+                }
+                val userPostAdapter = UserPostAdapter(requireContext(), actionMore = { postItem: PostItem ->
+                    userViewModel.userData.value?.let {
+                        MoreDialogFragment.newInstance(postItem.id.toInt()).show(parentFragmentManager, "tes")
+                    } ?: Toast.makeText(context, "Harap Login Terlebih dahulu", Toast.LENGTH_SHORT).show()
+                }, actionComments = {
+                    CommentDialogFragment.newInstance(it).show(parentFragmentManager,"show comments")
+                })
+
+                binding.recyclerViewUserPostProfile.apply {
+                    layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+                    adapter = userPostAdapter
+                }
+
+                postViewModel.getPostUser(userData?.id.toString()){
+                    userPostAdapter.differ.submitList(it)
                 }
             }
         }
