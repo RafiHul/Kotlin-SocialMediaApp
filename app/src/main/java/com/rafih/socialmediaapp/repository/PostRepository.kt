@@ -31,4 +31,8 @@ class PostRepository {
     suspend fun getPostComments(postId: String): Response<Comment> {
         return postService.getPostComment(postId)
     }
+
+    suspend fun getPostUser(userId: String): Response<Post> {
+        return postService.getPostUser(userId)
+    }
 }
