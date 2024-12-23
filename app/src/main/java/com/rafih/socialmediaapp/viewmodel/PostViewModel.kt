@@ -10,6 +10,7 @@ import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
 import com.rafih.socialmediaapp.model.databases.Comment
 import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
+import com.rafih.socialmediaapp.model.response.MsgDataComment
 import com.rafih.socialmediaapp.model.response.MsgDataPost
 import com.rafih.socialmediaapp.repository.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -83,12 +84,11 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
         }
     }
 
-    fun getPostComments(postId: String,action: (Comment?) -> Unit){
+    fun getPostComments(postId: String,action: (MsgDataComment?) -> Unit){
         viewModelScope.launch{
             val response = repo.getPostComments(postId)
             if (response.isSuccessful){
-                val body = response.body()
-                action(body)
+                action(response.body())
             }
         }
     }
@@ -96,6 +96,15 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
     fun getPostUser(userId: String, action: (Post?) -> Unit){
         viewModelScope.launch{
             val response = repo.getPostUser(userId)
+            if (response.isSuccessful){
+                action(response.body())
+            }
+        }
+    }
+
+    fun userComments(jwtToken: String, postId: String, text: String, action: (MsgDataComment?) -> Unit){
+        viewModelScope.launch{
+            val response = repo.userComment(jwtToken,postId,text)
             if (response.isSuccessful){
                 action(response.body())
             }
