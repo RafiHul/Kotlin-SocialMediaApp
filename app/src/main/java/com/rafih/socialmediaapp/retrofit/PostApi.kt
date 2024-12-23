@@ -3,6 +3,7 @@ package com.rafih.socialmediaapp.retrofit
 import com.rafih.socialmediaapp.model.databases.Comment
 import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
+import com.rafih.socialmediaapp.model.response.MsgDataComment
 import com.rafih.socialmediaapp.model.response.MsgDataPost
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -52,4 +53,12 @@ interface PostApi {
     suspend fun getPostUser(
         @Field("user_id") userId: String
     ): Response<Post>
+
+    @FormUrlEncoded
+    @POST("/usercomments")
+    suspend fun userComment(
+        @Header("Authorization") jwtToken: String,
+        @Field("post_id") postId: String,
+        @Field("text") text: String
+    ): Response<MsgDataComment>
 }

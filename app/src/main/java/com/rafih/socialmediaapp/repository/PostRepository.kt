@@ -3,6 +3,7 @@ package com.rafih.socialmediaapp.repository
 import com.rafih.socialmediaapp.model.databases.Comment
 import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.response.Msg
+import com.rafih.socialmediaapp.model.response.MsgDataComment
 import com.rafih.socialmediaapp.model.response.MsgDataPost
 import com.rafih.socialmediaapp.retrofit.RetrofitInstance
 import okhttp3.MultipartBody
@@ -34,5 +35,9 @@ class PostRepository {
 
     suspend fun getPostUser(userId: String): Response<Post> {
         return postService.getPostUser(userId)
+    }
+
+    suspend fun userComment(jwtToken: String, postId: String, text: String): Response<MsgDataComment> {
+        return postService.userComment(jwtToken,postId,text)
     }
 }
