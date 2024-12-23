@@ -29,7 +29,7 @@ class PostRepository {
         return postService.deletePost(jwtToken,postId)
     }
 
-    suspend fun getPostComments(postId: String): Response<Comment> {
+    suspend fun getPostComments(postId: String): Response<MsgDataComment> {
         return postService.getPostComment(postId)
     }
 

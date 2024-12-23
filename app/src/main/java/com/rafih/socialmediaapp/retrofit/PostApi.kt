@@ -46,7 +46,7 @@ interface PostApi {
     @POST("/getpostcomment")
     suspend fun getPostComment(
         @Field("post_id") postId: String
-    ): Response<Comment>
+    ): Response<MsgDataComment>
 
     @FormUrlEncoded
     @POST("/getpostuser")
