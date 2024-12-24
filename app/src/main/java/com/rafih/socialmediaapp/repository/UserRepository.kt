@@ -8,6 +8,7 @@ import com.rafih.socialmediaapp.retrofit.RetrofitInstance
 import com.rafih.socialmediaapp.Utils.saveLoginToken
 import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgDataImage
+import com.rafih.socialmediaapp.model.response.MsgDataUser
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -24,7 +25,7 @@ class UserRepository {
         clearLoginInfo(context)
     }
 
-    suspend fun getUserData(jwt: String): Response<User> {
+    suspend fun getUserData(jwt: String): Response<MsgDataUser> {
         return userServices.getUserData(jwt)
     }
 

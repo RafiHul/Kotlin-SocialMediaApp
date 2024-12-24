@@ -17,6 +17,7 @@ import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgDataImage
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import com.rafih.socialmediaapp.model.databases.User
+import com.rafih.socialmediaapp.model.response.MsgDataUser
 import com.rafih.socialmediaapp.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -46,16 +47,17 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
         }
     }
 
-    suspend fun setUserData(action: (Msg) -> Unit){
+    suspend fun setUserData(action: (MsgDataUser) -> Unit){
         withLoading {
             val get = repository.getUserData(getJwtBearer())
+            val body = get.body()!!
             if (get.isSuccessful){
-                _userData.value = get.body()
+                _userData.value = body.data
                 getProfilePic {
-                    action(Msg("success",it?.message.toString()))
+                    action(body)
                 }
             } else {
-                action(Msg("failed",get.message()))
+                action(body)
                 _userData.value = null
             }
         }

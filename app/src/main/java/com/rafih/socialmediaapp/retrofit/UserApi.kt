@@ -4,6 +4,7 @@ import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgDataImage
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import com.rafih.socialmediaapp.model.databases.User
+import com.rafih.socialmediaapp.model.response.MsgDataUser
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Field
@@ -33,7 +34,7 @@ interface UserApi {
     @GET("/getuserdata")
     suspend fun getUserData(
         @Header("Authorization") jwt: String
-    ): Response<User>
+    ): Response<MsgDataUser>
 
     @FormUrlEncoded
     @POST("/changeprofile")
@@ -62,4 +63,10 @@ interface UserApi {
     suspend fun getProfilePic(
         @Header("Authorization") jwtToken: String,
     ): Response<MsgDataImage>
+
+    @FormUrlEncoded
+    @POST("/getuserdatabyid")
+    suspend fun getUserDataById(
+        @Field("user_id") userId: String
+    ): Response<MsgDataUser>
 }
