@@ -1,14 +1,20 @@
 package com.rafih.socialmediaapp.viewmodel
 
 import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
+import com.rafih.socialmediaapp.fragment.dialog.CommentDialogFragment
+import com.rafih.socialmediaapp.fragment.dialog.MoreDialogFragment
 import com.rafih.socialmediaapp.model.databases.Comment
 import com.rafih.socialmediaapp.model.databases.Post
+import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.model.response.Msg
 import com.rafih.socialmediaapp.model.response.MsgDataComment
 import com.rafih.socialmediaapp.model.response.MsgDataPost
@@ -109,6 +115,16 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
                 action(response.body())
             }
         }
+    }
+
+    fun handleActionMore(context: Context, userData: User?, fm: FragmentManager, postId: Int){
+        userData?.let {
+            MoreDialogFragment.newInstance(postId).show(fm, "tes")
+        } ?: Toast.makeText(context, "Harap Login Terlebih dahulu", Toast.LENGTH_SHORT).show()
+    }
+
+    fun handleActionComment(postId: String, fm: FragmentManager){
+        CommentDialogFragment.newInstance(postId).show(fm,"show comments")
     }
 
 }

@@ -21,8 +21,6 @@ import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentProfileBinding
-import com.rafih.socialmediaapp.fragment.dialog.CommentDialogFragment
-import com.rafih.socialmediaapp.fragment.dialog.MoreDialogFragment
 import com.rafih.socialmediaapp.model.databases.PostItem
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.viewmodel.PostViewModel
@@ -53,12 +51,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         //get user data
         userData = userViewModel.userData.value
 
-        if (userData == null) {
-            Toast.makeText(context, "harap login terlebih dahulu", Toast.LENGTH_SHORT).show()
-            buttonLoginOrLogout("login")
-        } else {
+        userData?.let {
             Toast.makeText(context, "Selamat Datang ${userData!!.username}", Toast.LENGTH_SHORT).show()
             buttonLoginOrLogout("logout")
+        } ?: run {
+            Toast.makeText(context, "harap login terlebih dahulu", Toast.LENGTH_SHORT).show()
+            buttonLoginOrLogout("login")
         }
 
         // ProgressBar Loading
@@ -137,11 +135,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     startActivity(intent) //ini bisa di optimisasi lagi
                 }
                 val userPostAdapter = UserPostAdapter(requireContext(), actionMore = { postItem: PostItem ->
-                    userViewModel.userData.value?.let {
-                        MoreDialogFragment.newInstance(postItem.id.toInt()).show(parentFragmentManager, "tes")
-                    } ?: Toast.makeText(context, "Harap Login Terlebih dahulu", Toast.LENGTH_SHORT).show()
+                    postViewModel.handleActionMore(requireContext(),userData,parentFragmentManager,postItem.id.toInt())
                 }, actionComments = {
-                    CommentDialogFragment.newInstance(it).show(parentFragmentManager,"show comments")
+                    postViewModel.handleActionComment(it,parentFragmentManager)
                 })
 
                 binding.recyclerViewUserPostProfile.apply {

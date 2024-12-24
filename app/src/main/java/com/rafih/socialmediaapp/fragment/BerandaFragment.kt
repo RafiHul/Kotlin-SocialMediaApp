@@ -1,7 +1,6 @@
 package com.rafih.socialmediaapp.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.rafih.socialmediaapp.R
-import com.rafih.socialmediaapp.adapter.CommentPostAdapter
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentBerandaBinding
-import com.rafih.socialmediaapp.fragment.dialog.CommentDialogFragment
-import com.rafih.socialmediaapp.fragment.dialog.MoreDialogFragment
 import com.rafih.socialmediaapp.model.databases.PostItem
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.viewmodel.PostViewModel
@@ -49,11 +45,9 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
         }
 
         val userPostAdapter = UserPostAdapter(requireContext(), actionMore = { postItem: PostItem ->
-            userViewModel.userData.value?.let {
-                MoreDialogFragment.newInstance(postItem.id.toInt()).show(parentFragmentManager, "tes")
-            } ?: Toast.makeText(context, "Harap Login Terlebih dahulu", Toast.LENGTH_SHORT).show()
+            postViewModel.handleActionMore(requireContext(),userData,parentFragmentManager,postItem.id.toInt())
         }, actionComments = {
-            CommentDialogFragment.newInstance(it).show(parentFragmentManager,"show comments")
+            postViewModel.handleActionComment(it,parentFragmentManager)
         })
 
         binding.recyclerViewUserPost.apply {
