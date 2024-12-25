@@ -55,7 +55,7 @@ class CropImageFragment :
         binding.cropImageView.setOnCropImageCompleteListener(this)
         binding.cropImageView.setOnSetImageUriCompleteListener(this)
 
-        binding.reset.setOnClickListener{
+        binding.buttonSaveCropImage.setOnClickListener{
             binding.cropImageView.croppedImageAsync()
         }
     }
