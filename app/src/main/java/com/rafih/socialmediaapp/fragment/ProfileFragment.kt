@@ -1,6 +1,7 @@
 package com.rafih.socialmediaapp.fragment
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -52,17 +53,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         val otherUserId = arguments?.getString("userId")
 
-        when {
-            !otherUserId.isNullOrEmpty() -> { //if not null and not empty
-                loadOtherUserProfile(otherUserId)
-            } else -> {
-                loadOwnProfile()
-            }
-        } // intitelize userData
+        if(!otherUserId.isNullOrEmpty()){
+            loadOtherUserProfile(otherUserId)
+        } else {
+            loadOwnProfile()
+        }
 
         // ProgressBar Loading
-        userViewModel.loadingApi.observe(viewLifecycleOwner){
-            if (it){
+        userViewModel.loadingApi.observe(viewLifecycleOwner) {
+            if (it) {
                 binding.apply {
                     progressBar.visibility = View.VISIBLE
                     cardView.visibility = View.GONE
@@ -79,25 +78,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-        userViewModel.userData.observe(viewLifecycleOwner){
-            binding.textViewUsername.text = it?.username
+        userViewModel.userData.observe(viewLifecycleOwner) {
+            setUsernameView(it?.username)
         }
 
-        userViewModel.userProfilePic.observe(viewLifecycleOwner){
-            Glide.with(this)
-                .load(it)
-                .placeholder(R.drawable.baseline_account_circle_24)
-                .error(R.drawable.baseline_account_circle_24) //error drawable
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .circleCrop()
-                .into(binding.imageViewProfilePic)
-        } //ini jadiin 1 aja biar enak
+        userViewModel.userProfilePic.observe(viewLifecycleOwner) {
+            setProfilepicView(it)
+        }
 
         binding.buttonSettingsProfile.setOnClickListener {
             navController.navigate(R.id.action_profileFragment_to_settingsProfileFragment)
         }
 
-        binding.imageViewProfilePic.setOnClickListener{
+        binding.imageViewProfilePic.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }
     }
@@ -130,30 +123,19 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 binding.recyclerViewUserPostProfile.visibility = View.VISIBLE
                 binding.buttonLogoutOrLogin.text = "Logout"
                 binding.buttonLogoutOrLogin.setOnClickListener{
-                    userViewModel.clearLoginJWT(requireContext())
-                    binding.imageViewProfilePic.setImageResource(R.drawable.baseline_account_circle_24)
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent) //ini bisa di optimisasi lagi
+                    userLogout()
                 }
-                val userPostAdapter = UserPostAdapter(requireContext(), actionMore = { postItem: PostItem ->
-                    postViewModel.handleActionMore(requireContext(),userData,parentFragmentManager,postItem.id.toInt())
-                }, actionComments = {
-                    postViewModel.handleActionComment(it,parentFragmentManager)
-                }, actionViewUserPostProfile = {
-                    postViewModel.handleOtherUserProfile(it, requireContext())
-                })
-
-                binding.recyclerViewUserPostProfile.apply {
-                    layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
-                    adapter = userPostAdapter
-                }
-
-                postViewModel.getPostUser(userData?.id.toString()){
-                    userPostAdapter.differ.submitList(it)
-                }
+                setupUserPostAdapter()
             }
         }
+    }
+
+    private fun userLogout() {
+        userViewModel.clearLoginJWT(requireContext())
+        binding.imageViewProfilePic.setImageResource(R.drawable.baseline_account_circle_24)
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent) //ini bisa di optimisasi lagi
     }
 
     private fun toLoginActivity(){
@@ -162,18 +144,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     }
 
     private fun loadOtherUserProfile(otherUserId: String) {
-        userViewModel.getUserDataById(otherUserId) { response -> // get userdata from click post profile picture
+        userViewModel.getUserDataById(otherUserId) { response ->
             if (response?.message != "failed") {
                 userData = response?.data
                 binding.cardView.visibility = View.GONE
-                binding.textViewUsername.text = response?.data?.username ?: "error"
-                Glide.with(this)
-                    .load(stringToImageBitmap(response?.data?.profile_pic))
-                    .placeholder(R.drawable.baseline_account_circle_24)
-                    .error(R.drawable.baseline_account_circle_24) //error drawable
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .circleCrop()
-                    .into(binding.imageViewProfilePic)
+                setUsernameView(response?.data?.username ?: "error")
+                setProfilepicView(stringToImageBitmap(response?.data?.profile_pic))
             }
         }
     }
@@ -187,6 +163,39 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             Toast.makeText(context, "harap login terlebih dahulu", Toast.LENGTH_SHORT).show()
             buttonLoginOrLogout("login")
         }
+    }
+
+    private fun setupUserPostAdapter() {
+        val userPostAdapter = UserPostAdapter(requireContext(), actionMore = { postItem: PostItem ->
+            postViewModel.handleActionMore(requireContext(),userData,parentFragmentManager,postItem.id.toInt())
+        }, actionComments = {
+            postViewModel.handleActionComment(it,parentFragmentManager)
+        }, actionViewUserPostProfile = {
+            postViewModel.handleOtherUserProfile(it, requireContext())
+        })
+
+        binding.recyclerViewUserPostProfile.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+            adapter = userPostAdapter
+        }
+
+        postViewModel.getPostUser(userData?.id.toString()){
+            userPostAdapter.differ.submitList(it)
+        }
+    }
+
+    private fun setUsernameView(username: String?) {
+        binding.textViewUsername.text = username
+    }
+
+    private fun setProfilepicView(imageBitmap: Bitmap?) {
+        Glide.with(this)
+            .load(imageBitmap)
+            .placeholder(R.drawable.baseline_account_circle_24)
+            .error(R.drawable.baseline_account_circle_24) //error drawable
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .circleCrop()
+            .into(binding.imageViewProfilePic)
     }
 
     override fun onDestroyView() {
