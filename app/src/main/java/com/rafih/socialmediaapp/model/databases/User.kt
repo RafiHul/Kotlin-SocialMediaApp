@@ -11,5 +11,6 @@ data class User(
     val last_name: String,
     val username: String,
     val password: String,
-    val profile_pic: String?
+    val profile_pic: String?,
+    val img_type: String?
 ): Parcelable

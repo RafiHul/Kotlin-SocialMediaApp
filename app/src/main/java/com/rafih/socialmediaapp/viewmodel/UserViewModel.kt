@@ -14,7 +14,6 @@ import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
 import com.rafih.socialmediaapp.Utils.toBitMap
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.model.response.Msg
-import com.rafih.socialmediaapp.model.response.MsgDataImage
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.model.response.MsgDataUser
@@ -54,12 +53,11 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
                 val body = get.body()!!
                 if (get.isSuccessful) {
                     _userData.value = body.data
-                    getProfilePic {
-                        action(body)
-                    }
+                    _userProfilePic.value = stringToImageBitmap(body.data?.profile_pic)
                 } else {
                     action(body)
                     _userData.value = null
+                    _userProfilePic.value = null
                 } // TODO: Cek function ini bermasalah atau nggak karena type return nya baru di ganti
             } catch (e: Exception){
                 action(MsgDataUser(null,"sesi telah habis","failed"))
@@ -78,6 +76,7 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
 
     fun clearUserData(){
         _userData.value = null
+        _userProfilePic.value = null
     }
 
     suspend fun postRegisterUser(user: User,action: (Msg) -> Unit){
@@ -157,24 +156,6 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
             }
         } catch (e: Exception) {
             action(Msg("failed", "Failed To Connect"))
-        }
-    }
-
-    suspend fun getProfilePic(action: (MsgDataImage?) -> Unit){
-        try {
-            _userProfilePic.value = null //reset pic
-            val jwt = getJwtBearer()
-            val getPic = repository.getProfilePic(jwt)
-            val body = getPic.body()
-            if (getPic.isSuccessful && getPic.body()?.data != null) {
-                val bitMapImage = stringToImageBitmap(body?.data?.imageEncode!!)//ini harus di aturrrr biar null safe
-                _userProfilePic.value = bitMapImage
-                action(body)
-            } else {
-                action(body)
-            }
-        } catch (e: Exception){
-            Log.d("erorgetpic viewmodel",e.message.toString())
         }
     }
 

@@ -1,7 +1,6 @@
 package com.rafih.socialmediaapp.retrofit
 
 import com.rafih.socialmediaapp.model.response.Msg
-import com.rafih.socialmediaapp.model.response.MsgDataImage
 import com.rafih.socialmediaapp.model.response.MsgWithToken
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.model.response.MsgDataUser
@@ -58,11 +57,6 @@ interface UserApi {
         @Header("Authorization") jwtToken: String,
         @Part image: MultipartBody.Part
     ): Response<Msg>
-
-    @GET("/getprofilepic")
-    suspend fun getProfilePic(
-        @Header("Authorization") jwtToken: String,
-    ): Response<MsgDataImage>
 
     @FormUrlEncoded
     @POST("/getuserdatabyid")
