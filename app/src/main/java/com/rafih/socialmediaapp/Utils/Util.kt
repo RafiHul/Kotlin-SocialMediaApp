@@ -19,7 +19,7 @@ fun ByteArray.toBitMap(): Bitmap? {
     return BitmapFactory.decodeByteArray(this,0,this.size)
 }
 
-fun stringToImageBitmap(str: String): Bitmap? {
+fun stringToImageBitmap(str: String?): Bitmap? {
     val decodeBytes = Base64.decode(str, Base64.DEFAULT)
     return decodeBytes.toBitMap() //convert to bitmap
 }

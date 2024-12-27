@@ -49,16 +49,29 @@ class UserViewModel @Inject constructor(val app:Application,val repository: User
 
     suspend fun setUserData(action: (MsgDataUser) -> Unit){
         withLoading {
-            val get = repository.getUserData(getJwtBearer())
-            val body = get.body()!!
-            if (get.isSuccessful){
-                _userData.value = body.data
-                getProfilePic {
+            try {
+                val get = repository.getUserData(getJwtBearer())
+                val body = get.body()!!
+                if (get.isSuccessful) {
+                    _userData.value = body.data
+                    getProfilePic {
+                        action(body)
+                    }
+                } else {
                     action(body)
-                }
-            } else {
-                action(body)
-                _userData.value = null
+                    _userData.value = null
+                } // TODO: Cek function ini bermasalah atau nggak karena type return nya baru di ganti
+            } catch (e: Exception){
+                action(MsgDataUser(null,"sesi telah habis","failed"))
+            }
+        }
+    }
+
+    fun getUserDataById(userId: String,action: (MsgDataUser?) -> Unit){
+        viewModelScope.launch{
+            val response = repository.getUserDataById(userId)
+            if (response.isSuccessful){
+                action(response.body())
             }
         }
     }

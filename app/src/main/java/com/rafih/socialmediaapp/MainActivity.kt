@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     if (it.status == "failed") {
                         Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show() //disini ada error atau sesi habis
                         Log.d("eror get", it.toString())
-                        userViewModel.clearLoginJWT(applicationContext) //ini ada bug kalo gagal dia memulai ulang activity nya
+                        userViewModel.clearLoginJWT(applicationContext) //TODO : ini ada bug kalo gagal dia memulai ulang activity nya
                     }
                 }
                 binding.root.visibility = View.VISIBLE

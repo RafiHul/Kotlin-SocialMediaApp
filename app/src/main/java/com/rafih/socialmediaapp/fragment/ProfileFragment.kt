@@ -18,6 +18,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.rafih.socialmediaapp.LogRegActivity
 import com.rafih.socialmediaapp.MainActivity
 import com.rafih.socialmediaapp.R
+import com.rafih.socialmediaapp.Utils.stringToImageBitmap
 import com.rafih.socialmediaapp.Utils.toByteArray
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentProfileBinding
@@ -25,6 +26,7 @@ import com.rafih.socialmediaapp.model.databases.PostItem
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.viewmodel.PostViewModel
 import com.rafih.socialmediaapp.viewmodel.UserViewModel
+import kotlin.getValue
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
@@ -48,16 +50,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
-        //get user data
-        userData = userViewModel.userData.value
+        val otherUserId = arguments?.getString("userId")
 
-        userData?.let {
-            Toast.makeText(context, "Selamat Datang ${userData!!.username}", Toast.LENGTH_SHORT).show()
-            buttonLoginOrLogout("logout")
-        } ?: run {
-            Toast.makeText(context, "harap login terlebih dahulu", Toast.LENGTH_SHORT).show()
-            buttonLoginOrLogout("login")
-        }
+        when {
+            !otherUserId.isNullOrEmpty() -> { //if not null and not empty
+                loadOtherUserProfile(otherUserId)
+            } else -> {
+                loadOwnProfile()
+            }
+        } // intitelize userData
 
         // ProgressBar Loading
         userViewModel.loadingApi.observe(viewLifecycleOwner){
@@ -90,7 +91,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .circleCrop()
                 .into(binding.imageViewProfilePic)
-        }
+        } //ini jadiin 1 aja biar enak
+
         binding.buttonSettingsProfile.setOnClickListener {
             navController.navigate(R.id.action_profileFragment_to_settingsProfileFragment)
         }
@@ -138,6 +140,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     postViewModel.handleActionMore(requireContext(),userData,parentFragmentManager,postItem.id.toInt())
                 }, actionComments = {
                     postViewModel.handleActionComment(it,parentFragmentManager)
+                }, actionViewUserPostProfile = {
+                    postViewModel.handleOtherUserProfile(it, requireContext())
                 })
 
                 binding.recyclerViewUserPostProfile.apply {
@@ -155,6 +159,34 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private fun toLoginActivity(){
         val intent = Intent(context, LogRegActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun loadOtherUserProfile(otherUserId: String) {
+        userViewModel.getUserDataById(otherUserId) { response -> // get userdata from click post profile picture
+            if (response?.message != "failed") {
+                userData = response?.data
+                binding.cardView.visibility = View.GONE
+                binding.textViewUsername.text = response?.data?.username ?: "error"
+                Glide.with(this)
+                    .load(stringToImageBitmap(response?.data?.profile_pic))
+                    .placeholder(R.drawable.baseline_account_circle_24)
+                    .error(R.drawable.baseline_account_circle_24) //error drawable
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .circleCrop()
+                    .into(binding.imageViewProfilePic)
+            }
+        }
+    }
+
+    private fun loadOwnProfile() {
+        userData = userViewModel.userData.value
+        userData?.let {
+            Toast.makeText(context, "Selamat Datang ${userData!!.username}", Toast.LENGTH_SHORT).show()
+            buttonLoginOrLogout("logout")
+        } ?: run {
+            Toast.makeText(context, "harap login terlebih dahulu", Toast.LENGTH_SHORT).show()
+            buttonLoginOrLogout("login")
+        }
     }
 
     override fun onDestroyView() {

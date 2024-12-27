@@ -2,6 +2,7 @@ package com.rafih.socialmediaapp.viewmodel
 
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -9,10 +10,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rafih.socialmediaapp.UserProfileActivity
 import com.rafih.socialmediaapp.Utils.convertUriToMultiPart
 import com.rafih.socialmediaapp.fragment.dialog.CommentDialogFragment
 import com.rafih.socialmediaapp.fragment.dialog.MoreDialogFragment
-import com.rafih.socialmediaapp.model.databases.Comment
 import com.rafih.socialmediaapp.model.databases.Post
 import com.rafih.socialmediaapp.model.databases.User
 import com.rafih.socialmediaapp.model.response.Msg
@@ -125,6 +126,11 @@ class PostViewModel @Inject constructor(val repo: PostRepository): ViewModel() {
 
     fun handleActionComment(postId: String, fm: FragmentManager){
         CommentDialogFragment.newInstance(postId).show(fm,"show comments")
+    }
+
+    fun handleOtherUserProfile(userId: String, context: Context) {
+        val intent = Intent(context, UserProfileActivity::class.java).putExtra("userId", userId)
+        context.startActivity(intent)
     }
 
 }

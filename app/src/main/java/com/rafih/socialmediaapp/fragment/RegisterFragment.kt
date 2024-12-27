@@ -51,7 +51,7 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
 
             if (username.isNotEmpty() && password.isNotEmpty()){
                 lifecycleScope.launch {
-                    userViewModel.postRegisterUser(User("s","p",0,"as",username,password)){
+                    userViewModel.postRegisterUser(User("s","p",0,"as",username,password,null)){
                         Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
                     }
                 }

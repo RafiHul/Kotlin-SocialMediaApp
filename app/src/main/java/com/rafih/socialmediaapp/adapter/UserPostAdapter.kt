@@ -14,7 +14,7 @@ import com.rafih.socialmediaapp.Utils.stringToImageBitmap
 import com.rafih.socialmediaapp.databinding.RecyclerviewPostBinding
 import com.rafih.socialmediaapp.model.databases.PostItem
 
-class UserPostAdapter(val context: Context,val actionMore: (PostItem) -> Unit, val actionComments: (String) -> Unit): RecyclerView.Adapter<UserPostAdapter.MyViewHolder>() {
+class UserPostAdapter(val context: Context,val actionMore: (PostItem) -> Unit, val actionComments: (String) -> Unit, val actionViewUserPostProfile: (String) -> Unit): RecyclerView.Adapter<UserPostAdapter.MyViewHolder>() {
 
 //    init {
 //        // Basic Pre-fetch
@@ -48,6 +48,9 @@ class UserPostAdapter(val context: Context,val actionMore: (PostItem) -> Unit, v
                 .circleCrop()
                 .into(binding.imageViewProfilePicBeranda)
 
+            binding.imageViewProfilePicBeranda.setOnClickListener{
+                actionViewUserPostProfile(currentPost.UserId.toString())
+            }
 //            binding.imageViewProfilePicBeranda.setImageBitmap(currentPost.userProfilePicturePost?.decodeToByteArray()?.toBitMap())
 
             if (currImage == null){

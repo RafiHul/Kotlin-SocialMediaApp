@@ -29,6 +29,10 @@ class UserRepository {
         return userServices.getUserData(jwt)
     }
 
+    suspend fun getUserDataById(userId: String): Response<MsgDataUser> {
+        return userServices.getUserDataById(userId)
+    }
+
     suspend fun postRegisterUser(user: User): Response<Msg> {
         return userServices.postRegisterUser(user.username,user.password)
     }

@@ -44,10 +44,13 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
             userData = it
         }
 
-        val userPostAdapter = UserPostAdapter(requireContext(), actionMore = { postItem: PostItem ->
+        val userPostAdapter = UserPostAdapter(requireContext(),
+            actionMore = { postItem: PostItem ->
             postViewModel.handleActionMore(requireContext(),userData,parentFragmentManager,postItem.id.toInt())
         }, actionComments = {
             postViewModel.handleActionComment(it,parentFragmentManager)
+        }, actionViewUserPostProfile = {
+            postViewModel.handleOtherUserProfile(it, requireContext())
         })
 
         binding.recyclerViewUserPost.apply {
