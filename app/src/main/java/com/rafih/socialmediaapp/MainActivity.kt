@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         }.attach()
     }
 
-    fun backToBeranda(){
-        myPager.setCurrentItem(0)
+    fun gotoProfile(){
+        myPager.setCurrentItem(1,true)
     }
 }

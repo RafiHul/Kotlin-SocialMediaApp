@@ -174,8 +174,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             postViewModel.handleActionMore(requireContext(),userData,parentFragmentManager,postItem.id.toInt())
         }, actionComments = {
             postViewModel.handleActionComment(it,parentFragmentManager)
-        }, actionViewUserPostProfile = {
-            postViewModel.handleOtherUserProfile(it, requireContext())
         })
 
         binding.recyclerViewUserPostProfile.apply {

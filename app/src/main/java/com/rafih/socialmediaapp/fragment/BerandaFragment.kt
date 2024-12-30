@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rafih.socialmediaapp.MainActivity
 import com.rafih.socialmediaapp.R
 import com.rafih.socialmediaapp.adapter.UserPostAdapter
 import com.rafih.socialmediaapp.databinding.FragmentBerandaBinding
@@ -49,8 +50,12 @@ class BerandaFragment : Fragment(R.layout.fragment_beranda) {
             postViewModel.handleActionMore(requireContext(),userData,parentFragmentManager,postItem.id.toInt())
         }, actionComments = {
             postViewModel.handleActionComment(it,parentFragmentManager)
-        }, actionViewUserPostProfile = {
-            postViewModel.handleOtherUserProfile(it, requireContext())
+        }, actionViewUserPostProfile = {userId ->
+            if (userData?.id == userId.toInt()){ //
+                (activity as MainActivity).gotoProfile()
+            } else {
+                postViewModel.handleOtherUserProfile(userId, requireContext())
+            }
         })
 
         binding.recyclerViewUserPost.apply {
