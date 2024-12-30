@@ -77,22 +77,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
         }
-
-        userViewModel.userData.observe(viewLifecycleOwner) {
-            setUsernameView(it?.username)
-        }
-
-        userViewModel.userProfilePic.observe(viewLifecycleOwner) {
-            setProfilepicView(it)
-        }
-
-        binding.buttonSettingsProfile.setOnClickListener {
-            navController.navigate(R.id.action_profileFragment_to_settingsProfileFragment)
-        }
-
-        binding.imageViewProfilePic.setOnClickListener {
-            pickImageLauncher.launch("image/*")
-        }
     }
 
     private val pickImageLauncher = registerForActivityResult(
@@ -125,8 +109,27 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 binding.buttonLogoutOrLogin.setOnClickListener{
                     userLogout()
                 }
-                setupUserPostAdapter()
+                initOwnProfileView()
+                initUserPostAdapter(userData?.id.toString())
             }
+        }
+    }
+
+    private fun initOwnProfileView() {
+        userViewModel.userData.observe(viewLifecycleOwner) {
+            setUsernameView(it?.username)
+        }
+
+        userViewModel.userProfilePic.observe(viewLifecycleOwner) {
+            setProfilepicView(it)
+        }
+
+        binding.buttonSettingsProfile.setOnClickListener {
+            navController.navigate(R.id.action_profileFragment_to_settingsProfileFragment)
+        }
+
+        binding.imageViewProfilePic.setOnClickListener {
+            pickImageLauncher.launch("image/*")
         }
     }
 
@@ -150,6 +153,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 binding.cardView.visibility = View.GONE
                 setUsernameView(response?.data?.username ?: "error")
                 setProfilepicView(stringToImageBitmap(response?.data?.profile_pic))
+                initUserPostAdapter(userData?.id.toString())
             }
         }
     }
@@ -165,7 +169,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         }
     }
 
-    private fun setupUserPostAdapter() {
+    private fun initUserPostAdapter(userId: String) {
         val userPostAdapter = UserPostAdapter(requireContext(), actionMore = { postItem: PostItem ->
             postViewModel.handleActionMore(requireContext(),userData,parentFragmentManager,postItem.id.toInt())
         }, actionComments = {
@@ -179,7 +183,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             adapter = userPostAdapter
         }
 
-        postViewModel.getPostUser(userData?.id.toString()){
+        postViewModel.getPostUser(userId){
             userPostAdapter.differ.submitList(it)
         }
     }
