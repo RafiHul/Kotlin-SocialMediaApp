@@ -1,172 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardCornerRadius="24dp">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:cardCornerRadius="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageViewProfilePicBeranda"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textViewUsernameBeranda"
-            android:layout_width="wrap_content"
-            android:layout_height="21dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="12dp"
-            android:fontFamily="sans-serif"
-            android:text="TextView"
-            android:textColor="@color/TextBlueColor"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/imageViewProfilePicBeranda"
-            app:layout_constraintStart_toEndOf="@+id/imageViewProfilePicBeranda"
-            app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda"
-            tools:fontFamily="@font/roboto" />
+            <ImageView
+                android:id="@+id/imageViewProfilePicBeranda"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            app:layout_constraintStart_toStartOf="@+id/textViewUsernameBeranda"
-            app:layout_constraintTop_toBottomOf="@+id/textViewUsernameBeranda"
-            app:srcCompat="@drawable/earth_8_svgrepo_com" />
+            <TextView
+                android:id="@+id/textViewUsernameBeranda"
+                android:layout_width="wrap_content"
+                android:layout_height="21dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif"
+                android:text="TextView"
+                android:textColor="@color/TextBlueColor"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/imageViewProfilePicBeranda"
+                app:layout_constraintStart_toEndOf="@+id/imageViewProfilePicBeranda"
+                app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda"
+                tools:fontFamily="@font/roboto" />
 
-        <TextView
-            android:id="@+id/textViewTimeBeranda"
-            android:layout_width="wrap_content"
-            android:layout_height="13dp"
-            android:layout_marginStart="3dp"
-            android:layout_marginTop="6dp"
-            android:layout_weight="1"
-            android:fontFamily="@font/roboto"
-            android:gravity="center"
-            android:text="2 hours ago"
-            android:textColor="@color/grey_blue"
-            android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/imageView3"
-            app:layout_constraintTop_toBottomOf="@+id/textViewUsernameBeranda" />
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                app:layout_constraintStart_toStartOf="@+id/textViewUsernameBeranda"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUsernameBeranda"
+                app:srcCompat="@drawable/earth_8_svgrepo_com" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/imageButtonMorePost"
-            android:layout_width="40dp"
-            android:layout_height="45dp"
-            android:layout_marginEnd="16dp"
-            android:backgroundTint="#F1F4F5"
-            app:cornerRadius="50dp"
-            app:icon="@drawable/baseline_more_horiz_24"
-            app:iconSize="25dp"
-            app:iconTint="@color/grey_blue"
-            app:iconGravity="textStart"
-            app:iconPadding="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
-
-        <TextView
-            android:id="@+id/textViewTitlePostBeranda"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/roboto"
-            android:text="TextView"
-            android:textColor="#2D3F7B"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicBeranda"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewProfilePicBeranda" />
-
-        <ImageView
-            android:id="@+id/imageViewUserPost"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:adjustViewBounds="true"
-            android:background="@color/white"
-            android:scaleType="centerCrop"
-            android:src="@drawable/screenshot_20240819_105132"
-            app:layout_constraintEnd_toEndOf="@+id/imageButtonMorePost"
-            app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicBeranda"
-            app:layout_constraintTop_toBottomOf="@+id/textViewTitlePostBeranda" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/roboto"
-            android:text="textView"
-            android:textColor="@color/grey_blue"
-            android:textSize="10sp"
-            app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicBeranda"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewUserPost" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            android:paddingBottom="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textView">
+            <TextView
+                android:id="@+id/textViewTimeBeranda"
+                android:layout_width="wrap_content"
+                android:layout_height="13dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/roboto"
+                android:gravity="center"
+                android:text="2 hours ago"
+                android:textColor="@color/grey_blue"
+                android:textSize="10sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView3"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUsernameBeranda" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/imageButtonLikePost"
+                android:id="@+id/imageButtonMorePost"
                 android:layout_width="40dp"
                 android:layout_height="45dp"
                 android:layout_marginEnd="16dp"
-                android:backgroundTint="#C3E4FF"
+                android:backgroundTint="#F1F4F5"
                 app:cornerRadius="50dp"
-                app:icon="@drawable/baseline_thumb_up_24"
+                app:icon="@drawable/baseline_more_horiz_24"
                 app:iconGravity="textStart"
                 app:iconPadding="0dp"
-                app:iconTint="#1877F2"
+                app:iconSize="25dp"
+                app:iconTint="@color/grey_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/imageButtonCommentsPost"
-                android:layout_width="40dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="#C3E4FF"
-                app:cornerRadius="50dp"
-                app:icon="@drawable/baseline_chat_24"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconTint="#1877F2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
+            <TextView
+                android:id="@+id/textViewTitlePostBeranda"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/roboto"
+                android:text="TextView"
+                android:textColor="#2D3F7B"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicBeranda"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewProfilePicBeranda" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/imageButtonSharePost"
-                android:layout_width="40dp"
-                android:layout_height="45dp"
-                android:layout_marginEnd="16dp"
-                android:backgroundTint="#C3E4FF"
-                app:cornerRadius="50dp"
-                app:icon="@drawable/baseline_send_24"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconTint="#1877F2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
+            <ImageView
+                android:id="@+id/imageViewUserPost"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:adjustViewBounds="true"
+                android:background="@color/white"
+                android:scaleType="centerCrop"
+                android:src="@drawable/screenshot_20240819_105132"
+                app:layout_constraintEnd_toEndOf="@+id/imageButtonMorePost"
+                app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicBeranda"
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitlePostBeranda" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/roboto"
+                android:text="textView"
+                android:textColor="@color/grey_blue"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@+id/imageViewProfilePicBeranda"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewUserPost" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textView">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/imageButtonLikePost"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/blue_button_background"
+                    app:cornerRadius="50dp"
+                    app:icon="@drawable/baseline_thumb_up_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/blue_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/imageButtonCommentsPost"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="#C3E4FF"
+                    app:cornerRadius="50dp"
+                    app:icon="@drawable/baseline_chat_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/blue_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/imageButtonSharePost"
+                    android:layout_width="40dp"
+                    android:layout_height="45dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="#C3E4FF"
+                    app:cornerRadius="50dp"
+                    app:icon="@drawable/baseline_send_24"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/blue_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imageViewProfilePicBeranda" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

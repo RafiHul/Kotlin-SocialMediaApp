@@ -1,7 +1,6 @@
 package com.rafih.socialmediaapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +27,6 @@ class UserProfileActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         val userIdData = intent.getStringExtra("userId")
-        Log.d("adagk", userIdData.toString())
 
         val bundle = Bundle().apply {
             putString("userId", userIdData)

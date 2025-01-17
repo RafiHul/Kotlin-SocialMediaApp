@@ -64,6 +64,7 @@ class CommentDialogFragment : DialogFragment(R.layout.fragment_comment_dialog) {
             if (commentsText.isNotEmpty()){
                 postViewModel.userComments(userJwt,postId,commentsText){
                     refreshCommentAdapter(it)
+                    Toast.makeText(context, "berhasil menambahkan komentar", Toast.LENGTH_SHORT).show()
                     binding.editTextCommentsField.setText("")
                 }
             }
@@ -86,7 +87,6 @@ class CommentDialogFragment : DialogFragment(R.layout.fragment_comment_dialog) {
     private fun refreshCommentAdapter(msgDataComment: MsgDataComment?){
         msgDataComment?.let {dat ->
             commentPostAdapter.differ.submitList(dat.data)
-            Toast.makeText(context, dat.message, Toast.LENGTH_SHORT).show() // ini hapus pas memuat komentar
         } ?: Toast.makeText(context, "gagal memuat komentar", Toast.LENGTH_SHORT).show()
     }
 

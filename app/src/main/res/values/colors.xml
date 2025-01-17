@@ -11,4 +11,6 @@
     <color name="black">#000000</color>
     <color name="TextBlueColor">#19295C</color>
     <color name="grey_blue">#99A1BE</color>
+    <color name="blue_button">#1877F2</color>
+    <color name="blue_button_background">#C3E4FF</color>
 </resources>
